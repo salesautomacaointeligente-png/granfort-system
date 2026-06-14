@@ -2,7 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1e40af">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GranfortSystem">
+<link rel="manifest" href="manifest.json">
 <title>GranfortSystem — Gestão de Marmoraria</title>
 <style>
 :root{
@@ -150,13 +156,52 @@ input,select,textarea{font-family:inherit;font-size:14px}
 /* Mobile */
 .menu-btn{display:none;padding:8px;border-radius:8px;background:none;border:1.5px solid var(--border)}
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
+  .sidebar{transform:translateX(-100%);width:80vw;max-width:280px}
   .sidebar.open{transform:translateX(0)}
   .main{margin-left:0}
   .menu-btn{display:flex;align-items:center;justify-content:center}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
   .overlay-menu{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
   .overlay-menu.open{display:block}
+
+  /* Conteúdo */
+  #content{padding:12px}
+  .topbar{padding:10px 12px}
+
+  /* KPI 2 colunas no celular */
+  .grid-4{grid-template-columns:1fr 1fr}
+
+  /* Tabelas com scroll */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl td,.tbl th{white-space:nowrap}
+
+  /* Botões maiores para toque */
+  .btn{padding:10px 16px;font-size:14px;min-height:44px}
+  .btn-sm{padding:8px 12px;font-size:13px;min-height:38px}
+
+  /* Modal tela cheia no celular */
+  #modalRoot .modal{max-width:100%;max-height:100%;height:100%;border-radius:0;margin:0}
+  #modalRoot .overlay{padding:0;align-items:flex-end}
+  #modalRoot .modal.lg,#modalRoot .modal.xl{max-width:100%}
+
+  /* Pipeline e Kanban com scroll */
+  .pipeline,.kanban{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:16px}
+  .pipeline-col{min-width:260px}
+  .kanban-col{min-width:240px}
+
+  /* Card body padding menor */
+  .card-body{padding:14px}
+  .card-header{padding:12px 14px}
+
+  /* KPI menor */
+  .kpi{padding:12px}
+  .kpi-value{font-size:20px}
+
+  /* Input e select maiores para toque */
+  .input,.select{padding:12px;font-size:16px;min-height:44px}
+
+  /* Ações na tabela empilhadas */
+  .actions{flex-direction:column;gap:4px}
 }
 </style>
 </head>
