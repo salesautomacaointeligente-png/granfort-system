@@ -14,155 +14,106 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;f
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,select,textarea{font-family:inherit;font-size:16px}
 
-/* Header */
-.header{background:#1e40af;color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.header-back{background:rgba(255,255,255,.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer}
-.header-title{font-weight:700;font-size:17px;flex:1}
-.header-sub{font-size:12px;opacity:.8}
+.header{background:#1e40af;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.header-back{background:rgba(255,255,255,.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0}
+.header-title{font-weight:700;font-size:16px;flex:1}
 
-/* Tela */
-.screen{display:none;min-height:calc(100vh - 60px)}
+.screen{display:none;min-height:100vh}
 .screen.active{display:block}
 
-/* Home */
-.home-brand{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#fff;padding:32px 20px 28px;text-align:center}
-.home-logo{font-size:48px;margin-bottom:8px}
-.home-name{font-size:22px;font-weight:800}
-.home-sub{font-size:13px;opacity:.7;margin-top:4px}
-
-.home-btns{padding:24px 20px;display:flex;flex-direction:column;gap:14px}
-.home-btn{background:#fff;border:1.5px solid #e2e8f0;border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;transition:transform .1s,box-shadow .1s;text-align:left;width:100%}
-.home-btn:active{transform:scale(.98);box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.home-btn-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.home-btn-title{font-weight:700;font-size:16px;margin-bottom:3px}
+/* HOME */
+.home-brand{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#fff;padding:28px 20px 24px;text-align:center}
+.home-logo{font-size:44px;margin-bottom:6px}
+.home-name{font-size:20px;font-weight:800}
+.home-sub{font-size:12px;opacity:.7;margin-top:3px}
+.home-btns{padding:20px 16px;display:flex;flex-direction:column;gap:12px}
+.home-btn{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 6px rgba(0,0,0,.05);cursor:pointer;text-align:left;width:100%}
+.home-btn:active{background:#f8fafc}
+.home-btn-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.home-btn-title{font-weight:700;font-size:15px;margin-bottom:2px}
 .home-btn-sub{font-size:12px;color:#64748b}
 .icon-blue{background:#eff6ff}
 .icon-green{background:#f0fdf4}
 .icon-orange{background:#fff7ed}
-
-.recentes{padding:0 20px 24px}
-.recentes-title{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.recente-item{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.recentes{padding:0 16px 24px}
+.recentes-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.recente-item{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .recente-nome{font-weight:600;font-size:14px}
 .recente-tel{font-size:12px;color:#64748b}
 
-/* Form */
-.form-body{padding:20px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:6px}
-.input{width:100%;padding:13px 14px;border:1.5px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;background:#fff;transition:border-color .15s}
+/* FORM */
+.form-body{padding:16px}
+.section{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:14px}
+.section-title{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.field{margin-bottom:13px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px}
+.input{width:100%;padding:12px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;outline:none;background:#fff;transition:border-color .15s}
 .input:focus{border-color:#1e40af}
-.select{width:100%;padding:13px 14px;border:1.5px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;background:#fff}
+.select{width:100%;padding:12px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:16px;outline:none;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
-/* Botão principal */
-.btn-main{width:100%;background:#1e40af;color:#fff;padding:16px;border-radius:14px;font-size:16px;font-weight:700;border:none;cursor:pointer;margin-top:8px;transition:background .15s}
-.btn-main:active{background:#1e3a8a}
-.btn-main.green{background:#10b981}
-.btn-main.green:active{background:#059669}
-.btn-main.red{background:#ef4444}
+/* Checkboxes grandes */
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check-btn{border:1.5px solid #e2e8f0;border-radius:10px;padding:11px 10px;text-align:center;font-size:13px;font-weight:600;color:#475569;cursor:pointer;transition:all .15s;background:#f8fafc}
+.check-btn.on{border-color:#1e40af;background:#eff6ff;color:#1e40af}
 
-/* Itens do orçamento */
-.itens-list{margin-bottom:16px}
-.item-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;position:relative}
-.item-remove{position:absolute;top:10px;right:10px;background:#fee2e2;color:#dc2626;border:none;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.item-desc{font-weight:600;font-size:14px;margin-bottom:4px}
-.item-val{font-size:16px;font-weight:700;color:#1e40af}
+/* Calculado */
+.calc-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin-top:10px}
+.calc-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;color:#475569}
+.calc-row:last-child{margin-bottom:0;font-weight:700;color:#0f172a;font-size:14px;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:4px}
 
-.btn-add-item{width:100%;background:#eff6ff;color:#1e40af;border:2px dashed #93c5fd;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:16px}
+/* Itens adicionados */
+.item-orc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px;margin-bottom:10px;position:relative}
+.item-orc-title{font-weight:700;font-size:14px;margin-bottom:3px}
+.item-orc-detail{font-size:12px;color:#64748b;margin-bottom:6px}
+.item-orc-valor{font-size:16px;font-weight:700;color:#1e40af}
+.item-orc-remove{position:absolute;top:10px;right:10px;background:#fee2e2;color:#dc2626;border:none;border-radius:7px;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-.total-box{background:#0f172a;color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
-.total-label{font-size:13px;color:#94a3b8}
-.total-value{font-size:24px;font-weight:800}
+/* Total */
+.total-box{background:#0f172a;color:#fff;border-radius:14px;padding:16px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.total-label{font-size:12px;color:#94a3b8;margin-bottom:2px}
+.total-value{font-size:22px;font-weight:800}
 
-/* Modal item */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end}
-.modal-overlay.open{display:flex}
-.modal-sheet{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-height:85vh;overflow-y:auto}
-.modal-handle{width:40px;height:4px;background:#e2e8f0;border-radius:2px;margin:0 auto 20px}
-.modal-title{font-size:17px;font-weight:700;margin-bottom:20px}
-
-/* Toast */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e293b;color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;transition:transform .3s;z-index:999;white-space:nowrap}
-#toast.show{transform:translateX(-50%) translateY(0)}
+/* Botões */
+.btn{width:100%;padding:15px;border-radius:12px;font-size:15px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn:active{opacity:.9;transform:scale(.99)}
+.btn-blue{background:#1e40af;color:#fff}
+.btn-green{background:#10b981;color:#fff}
+.btn-wpp{background:#25d366;color:#fff}
+.btn-outline{background:#fff;color:#1e40af;border:1.5px solid #1e40af}
 
 /* PDF Print */
 @media print{
-  .header,.home-btn,.btn-main,.btn-add-item,.item-remove,.no-print{display:none!important}
-  body{background:#fff;font-size:12pt}
-  .pdf-view{display:block!important}
-  #content{padding:0}
+  .no-print,.header,.home-btn,.btn,#toast{display:none!important}
+  body{background:#fff}
   .screen{display:block!important}
+  #screen-pdf{display:block!important}
+  .form-body{padding:0}
 }
-.pdf-view{display:none}
+.pdf-wrap{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:20px;margin-bottom:14px}
+.pdf-header{text-align:center;border-bottom:2px solid #1e40af;padding-bottom:14px;margin-bottom:16px}
+.pdf-empresa{font-size:19px;font-weight:800;color:#1e40af}
+.pdf-sub{font-size:12px;color:#64748b;margin-top:3px}
+.pdf-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.pdf-info div label{font-size:10px;color:#94a3b8;display:block}
+.pdf-info div b{font-size:13px}
+.pdf-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.pdf-table th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;border-bottom:2px solid #e2e8f0}
+.pdf-table td{padding:10px;border-bottom:1px solid #f1f5f9;font-size:13px}
+.pdf-table td:last-child{text-align:right;font-weight:700;color:#1e40af;white-space:nowrap}
+.pdf-total-row{background:#eff6ff;font-weight:800}
+.pdf-total-row td{font-size:15px!important;padding:12px 10px!important;color:#1e40af!important;border-bottom:none!important}
+.pdf-footer{font-size:11px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0;padding-top:12px;margin-top:4px}
 
-/* PDF Layout */
-.pdf-header{text-align:center;border-bottom:2px solid #1e40af;padding-bottom:16px;margin-bottom:20px}
-.pdf-empresa{font-size:20px;font-weight:800;color:#1e40af}
-.pdf-sub{font-size:12px;color:#475569;margin-top:4px}
-.pdf-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;font-size:13px}
-.pdf-info-item label{color:#64748b;font-size:11px;display:block}
-.pdf-info-item b{font-size:14px}
-.pdf-table{width:100%;border-collapse:collapse;margin-bottom:20px}
-.pdf-table th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;border-bottom:2px solid #e2e8f0}
-.pdf-table td{padding:12px;border-bottom:1px solid #f1f5f9;font-size:13px}
-.pdf-table td:last-child{text-align:right;font-weight:700;color:#1e40af}
-.pdf-total{background:#f8fafc;border-radius:10px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.pdf-total-label{font-size:14px;font-weight:600;color:#475569}
-.pdf-total-value{font-size:22px;font-weight:800;color:#1e40af}
-.pdf-footer{text-align:center;font-size:11px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:12px;margin-top:8px}
-.pdf-validade{font-size:11px;color:#64748b;text-align:center;margin-bottom:16px}
+/* Toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e293b;color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;font-weight:600;transition:transform .3s;z-index:999;white-space:nowrap}
 </style>
 </head>
 <body>
-<div id="toastEl" id="toast"></div>
-<div id="modalOverlay" class="modal-overlay" onclick="if(event.target===this)fecharModal()">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Adicionar Item</div>
-    <div class="field">
-      <label>Tipo de Peça / Serviço</label>
-      <select class="select" id="item_tipo" onchange="preencherDesc()">
-        <option value="">Selecione ou digite abaixo</option>
-        <optgroup label="Bancadas e Pias">
-          <option>Pia de Cozinha</option>
-          <option>Bancada de Cozinha</option>
-          <option>Ilha de Cozinha</option>
-          <option>Pia de Banheiro</option>
-          <option>Bancada de Banheiro</option>
-          <option>Lavabo</option>
-        </optgroup>
-        <optgroup label="Revestimentos">
-          <option>Soleira</option>
-          <option>Peitoril</option>
-          <option>Piso</option>
-          <option>Escada</option>
-          <option>Fachada</option>
-          <option>Painel</option>
-        </optgroup>
-        <optgroup label="Extras">
-          <option>Cuba Embutir</option>
-          <option>Cuba Sobrepor</option>
-          <option>Rodabanca</option>
-          <option>Saia</option>
-          <option>Instalação</option>
-          <option>Deslocamento</option>
-        </optgroup>
-        <option value="outro">Outro (descrever)</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Descrição (aparece no orçamento)</label>
-      <input class="input" id="item_desc" placeholder="Ex: Pia de Cozinha — Granito Preto">
-    </div>
-    <div class="field">
-      <label>Valor (R$)</label>
-      <input class="input" id="item_valor" type="number" placeholder="0,00" inputmode="decimal">
-    </div>
-    <button class="btn-main" onclick="confirmarItem()">✓ Adicionar Item</button>
-  </div>
-</div>
 
-<!-- TELA: HOME -->
+<!-- TELA HOME -->
 <div id="screen-home" class="screen active">
   <div class="home-brand">
     <div class="home-logo">💎</div>
@@ -172,156 +123,246 @@ input,select,textarea{font-family:inherit;font-size:16px}
   <div class="home-btns">
     <button class="home-btn" onclick="ir('screen-cliente')">
       <div class="home-btn-icon icon-blue">👤</div>
-      <div>
-        <div class="home-btn-title">Novo Cliente</div>
-        <div class="home-btn-sub">Cadastrar cliente no sistema</div>
-      </div>
+      <div><div class="home-btn-title">Novo Cliente</div><div class="home-btn-sub">Cadastrar e já fazer orçamento</div></div>
     </button>
-    <button class="home-btn" onclick="ir('screen-orcamento')">
+    <button class="home-btn" onclick="iniciarOrcamento()">
       <div class="home-btn-icon icon-green">📋</div>
-      <div>
-        <div class="home-btn-title">Novo Orçamento</div>
-        <div class="home-btn-sub">Gerar orçamento e enviar PDF</div>
-      </div>
+      <div><div class="home-btn-title">Novo Orçamento</div><div class="home-btn-sub">Medir, calcular e gerar PDF</div></div>
     </button>
     <button class="home-btn" onclick="ir('screen-materiais')">
       <div class="home-btn-icon icon-orange">🪨</div>
-      <div>
-        <div class="home-btn-title">Materiais & Peças</div>
-        <div class="home-btn-sub">Consultar preços e cadastros</div>
-      </div>
+      <div><div class="home-btn-title">Materiais & Peças</div><div class="home-btn-sub">Consultar preços cadastrados</div></div>
     </button>
   </div>
-  <div class="recentes" id="recentes-list"></div>
+  <div class="recentes" id="recentes-wrap"></div>
 </div>
 
-<!-- TELA: NOVO CLIENTE -->
+<!-- TELA CLIENTE -->
 <div id="screen-cliente" class="screen">
   <div class="header">
     <button class="header-back" onclick="ir('screen-home')">←</button>
-    <div>
-      <div class="header-title">Novo Cliente</div>
-    </div>
+    <div class="header-title">Novo Cliente</div>
   </div>
   <div class="form-body">
-    <div class="field"><label>Nome completo *</label><input class="input" id="cl_nome" placeholder="Nome do cliente"></div>
-    <div class="field"><label>Telefone (WhatsApp) *</label><input class="input" id="cl_tel" type="tel" placeholder="(73) 99999-9999" inputmode="tel"></div>
-    <div class="field"><label>Cidade</label><input class="input" id="cl_cidade" placeholder="Cidade"></div>
-    <div class="field"><label>Endereço</label><input class="input" id="cl_end" placeholder="Rua, número, bairro"></div>
-    <div class="field"><label>Tipo</label>
-      <select class="select" id="cl_tipo">
-        <option>Pessoa Física</option><option>Pessoa Jurídica</option><option>Arquiteto</option><option>Construtora</option>
-      </select>
+    <div class="section">
+      <div class="section-title">👤 Dados do Cliente</div>
+      <div class="field"><label>Nome completo *</label><input class="input" id="cl_nome" placeholder="Nome do cliente"></div>
+      <div class="field"><label>WhatsApp *</label><input class="input" id="cl_tel" type="tel" placeholder="(73) 99999-9999" inputmode="tel"></div>
+      <div class="row">
+        <div class="field"><label>Cidade</label><input class="input" id="cl_cidade" placeholder="Cidade"></div>
+        <div class="field"><label>Tipo</label>
+          <select class="select" id="cl_tipo">
+            <option>Pessoa Física</option><option>Pessoa Jurídica</option><option>Arquiteto</option><option>Construtora</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Endereço</label><input class="input" id="cl_end" placeholder="Rua, número, bairro"></div>
+      <div class="field"><label>E-mail</label><input class="input" id="cl_email" type="email" placeholder="email@email.com" inputmode="email"></div>
     </div>
-    <button class="btn-main green" onclick="salvarCliente()">✓ Salvar Cliente</button>
+    <button class="btn btn-green" onclick="salvarCliente()">✓ Salvar e Fazer Orçamento</button>
+    <button class="btn btn-outline" onclick="ir('screen-home')">Cancelar</button>
   </div>
 </div>
 
-<!-- TELA: NOVO ORÇAMENTO -->
+<!-- TELA ORÇAMENTO -->
 <div id="screen-orcamento" class="screen">
   <div class="header">
     <button class="header-back" onclick="ir('screen-home')">←</button>
-    <div>
-      <div class="header-title">Novo Orçamento</div>
-    </div>
+    <div class="header-title" id="orc-header-title">Novo Orçamento</div>
   </div>
   <div class="form-body">
-    <div class="field">
-      <label>Cliente *</label>
-      <input class="input" id="orc_cliente_nome" placeholder="Nome do cliente" list="clientes-list">
-      <datalist id="clientes-list"></datalist>
-    </div>
-    <div class="field">
-      <label>Telefone do Cliente</label>
-      <input class="input" id="orc_cliente_tel" type="tel" placeholder="(73) 99999-9999" inputmode="tel">
-    </div>
-    <div class="field">
-      <label>Validade do Orçamento</label>
-      <select class="select" id="orc_validade">
-        <option value="7">7 dias</option>
-        <option value="15" selected>15 dias</option>
-        <option value="30">30 dias</option>
-      </select>
+
+    <!-- Cliente -->
+    <div class="section">
+      <div class="section-title">👤 Cliente</div>
+      <div class="field"><label>Nome *</label>
+        <input class="input" id="orc_cliente_nome" placeholder="Nome do cliente" list="dl-clientes">
+        <datalist id="dl-clientes"></datalist>
+      </div>
+      <div class="row">
+        <div class="field"><label>WhatsApp</label><input class="input" id="orc_cliente_tel" type="tel" placeholder="(73) 99999-9999" inputmode="tel"></div>
+        <div class="field"><label>Cidade</label><input class="input" id="orc_cliente_cidade" placeholder="Cidade"></div>
+      </div>
     </div>
 
-    <div class="field"><label>Itens do Orçamento</label></div>
-    <div id="itens-list" class="itens-list"></div>
-    <button class="btn-add-item" onclick="abrirModal()">+ Adicionar Item</button>
+    <!-- Itens já adicionados -->
+    <div id="itens-adicionados"></div>
 
+    <!-- Adicionar peça -->
+    <div class="section" id="secao-nova-peca">
+      <div class="section-title">📐 Nova Peça / Ambiente</div>
+
+      <div class="field"><label>Tipo de Ambiente *</label>
+        <select class="select" id="p_ambiente">
+          <option value="">Selecione...</option>
+          <optgroup label="Cozinha">
+            <option>Pia de Cozinha</option><option>Bancada de Cozinha</option><option>Ilha de Cozinha</option>
+          </optgroup>
+          <optgroup label="Banheiro / Lavabo">
+            <option>Pia de Banheiro</option><option>Bancada de Banheiro</option><option>Lavabo</option>
+          </optgroup>
+          <optgroup label="Revestimentos">
+            <option>Soleira</option><option>Peitoril</option><option>Soleira + Peitoril</option>
+            <option>Escada</option><option>Piso</option><option>Fachada</option><option>Painel</option>
+          </optgroup>
+          <option>Outro</option>
+        </select>
+      </div>
+
+      <div class="field"><label>Descrição personalizada (opcional)</label>
+        <input class="input" id="p_desc_custom" placeholder="Ex: Bancada corredor blindex">
+      </div>
+
+      <div class="field"><label>Material</label>
+        <input class="input" id="p_material" placeholder="Ex: Granito Preto São Gabriel" list="dl-materiais">
+        <datalist id="dl-materiais"></datalist>
+      </div>
+
+      <div class="row">
+        <div class="field"><label>Espessura</label>
+          <select class="select" id="p_espessura">
+            <option>2cm</option><option>3cm</option><option>4cm</option>
+          </select>
+        </div>
+        <div class="field"><label>Preço/m² (R$)</label>
+          <input class="input" id="p_preco_m2" type="number" placeholder="450" inputmode="decimal" oninput="calcular()">
+        </div>
+      </div>
+
+      <div class="field"><label>📏 Medidas</label></div>
+      <div class="row">
+        <div class="field"><label>Comprimento (cm)</label>
+          <input class="input" id="p_comp" type="number" placeholder="280" inputmode="decimal" oninput="calcular()">
+        </div>
+        <div class="field"><label>Largura (cm)</label>
+          <input class="input" id="p_larg" type="number" placeholder="60" inputmode="decimal" oninput="calcular()">
+        </div>
+      </div>
+
+      <div class="field"><label>Posição / Observação da peça</label>
+        <input class="input" id="p_posicao" placeholder="Ex: canto direito, cuba à esquerda...">
+      </div>
+
+      <div class="field"><label>Serviços inclusos</label>
+        <div class="checks" id="checks-servicos">
+          <div class="check-btn" id="ck-saia" onclick="toggle('ck-saia')">Saia (15cm)</div>
+          <div class="check-btn" id="ck-rodo" onclick="toggle('ck-rodo')">Rodabanca</div>
+          <div class="check-btn" id="ck-cuba" onclick="toggle('ck-cuba')">Cuba inclusa</div>
+          <div class="check-btn" id="ck-furo" onclick="toggle('ck-furo')">Furo torneira</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field"><label>Furos (qtd)</label>
+          <input class="input" id="p_furos" type="number" value="0" inputmode="numeric" oninput="calcular()">
+        </div>
+        <div class="field"><label>Instalação (R$)</label>
+          <input class="input" id="p_instalacao" type="number" value="0" inputmode="decimal" oninput="calcular()">
+        </div>
+      </div>
+
+      <div class="field"><label>Deslocamento (R$)</label>
+        <input class="input" id="p_deslocamento" type="number" value="0" inputmode="decimal" oninput="calcular()">
+      </div>
+
+      <!-- Cálculo em tempo real -->
+      <div class="calc-box" id="calc-box" style="display:none">
+        <div class="calc-row"><span>Pedra (<span id="c-area">0</span> m² × R$ <span id="c-pm2">0</span>)</span><span id="c-vpedra">R$ 0</span></div>
+        <div class="calc-row" id="cr-saia" style="display:none"><span>Saia</span><span id="c-vsaia">R$ 0</span></div>
+        <div class="calc-row" id="cr-rodo" style="display:none"><span>Rodabanca</span><span id="c-vrodo">R$ 0</span></div>
+        <div class="calc-row" id="cr-cuba" style="display:none"><span>Cuba</span><span>R$ 280,00</span></div>
+        <div class="calc-row" id="cr-furos" style="display:none"><span>Furos (<span id="c-nfuros">0</span>×)</span><span id="c-vfuros">R$ 0</span></div>
+        <div class="calc-row" id="cr-inst" style="display:none"><span>Instalação</span><span id="c-vinst">R$ 0</span></div>
+        <div class="calc-row" id="cr-desl" style="display:none"><span>Deslocamento</span><span id="c-vdesl">R$ 0</span></div>
+        <div class="calc-row"><span>Subtotal desta peça</span><span id="c-sub">R$ 0,00</span></div>
+      </div>
+
+      <button class="btn btn-blue" style="margin-top:14px" onclick="adicionarPeca()">+ Adicionar esta Peça</button>
+    </div>
+
+    <!-- Total e ações -->
     <div class="total-box">
       <div>
-        <div class="total-label">TOTAL</div>
-        <div class="total-value" id="total-display">R$ 0,00</div>
+        <div class="total-label">TOTAL DO ORÇAMENTO</div>
+        <div class="total-value" id="total-geral">R$ 0,00</div>
       </div>
-      <div style="font-size:28px">💎</div>
+      <div style="font-size:26px">💎</div>
     </div>
 
-    <div class="field"><label>Observações (opcional)</label>
-      <textarea class="input" id="orc_obs" rows="3" placeholder="Ex: Prazo estimado de 15 dias úteis após aprovação..."></textarea>
+    <div class="section">
+      <div class="section-title">📝 Finalizar</div>
+      <div class="field"><label>Validade do orçamento</label>
+        <select class="select" id="orc_validade">
+          <option value="7">7 dias</option><option value="15" selected>15 dias</option><option value="30">30 dias</option>
+        </select>
+      </div>
+      <div class="field"><label>Observações internas (para escritório)</label>
+        <textarea class="input" id="orc_obs_int" rows="2" placeholder="Detalhes técnicos, dificuldades de instalação..."></textarea>
+      </div>
+      <div class="field"><label>Condições (aparece no PDF)</label>
+        <textarea class="input" id="orc_condicoes" rows="2" placeholder="Ex: 50% entrada, 50% na entrega..."></textarea>
+      </div>
     </div>
 
-    <button class="btn-main" onclick="gerarPDF()" style="margin-bottom:10px">📄 Gerar PDF do Orçamento</button>
-    <button class="btn-main green" onclick="enviarWhatsApp()">📲 Enviar por WhatsApp</button>
+    <button class="btn btn-green" onclick="salvarOrcamento()">💾 Salvar no Sistema</button>
+    <button class="btn btn-blue" onclick="gerarPDF()">📄 Gerar PDF p/ Cliente</button>
+    <button class="btn btn-wpp" onclick="enviarWpp()">📲 Enviar por WhatsApp</button>
   </div>
 </div>
 
-<!-- TELA: MATERIAIS -->
+<!-- TELA MATERIAIS -->
 <div id="screen-materiais" class="screen">
   <div class="header">
     <button class="header-back" onclick="ir('screen-home')">←</button>
-    <div><div class="header-title">Materiais & Peças</div></div>
+    <div class="header-title">Materiais & Peças</div>
   </div>
-  <div class="form-body">
-    <div id="lista-materiais"><div style="text-align:center;padding:40px;color:#94a3b8">Carregando...</div></div>
+  <div class="form-body" id="lista-materiais">
+    <div style="text-align:center;padding:40px;color:#94a3b8">Carregando...</div>
   </div>
 </div>
 
-<!-- TELA: PDF -->
+<!-- TELA PDF -->
 <div id="screen-pdf" class="screen">
   <div class="header no-print">
     <button class="header-back" onclick="ir('screen-orcamento')">←</button>
-    <div><div class="header-title">Orçamento Gerado</div></div>
+    <div class="header-title">Orçamento — PDF</div>
   </div>
   <div class="form-body">
-    <div class="no-print" style="display:flex;gap:10px;margin-bottom:20px">
-      <button class="btn-main" onclick="window.print()" style="flex:1">🖨️ Salvar / Imprimir PDF</button>
-      <button class="btn-main green" onclick="compartilharWhatsApp()" style="flex:1">📲 WhatsApp</button>
+    <div class="no-print" style="margin-bottom:16px">
+      <button class="btn btn-blue" onclick="window.print()">🖨️ Salvar como PDF</button>
+      <button class="btn btn-wpp" onclick="compartilharWpp()">📲 Enviar WhatsApp</button>
     </div>
-    <div id="pdf-content">
+    <div class="pdf-wrap" id="pdf-conteudo">
       <div class="pdf-header">
         <div class="pdf-empresa">💎 Granfort Marmoraria</div>
-        <div class="pdf-sub">Posto da Mata — BA | (73) 99999-9999</div>
+        <div class="pdf-sub">Posto da Mata — BA &nbsp;|&nbsp; (73) 99999-9999</div>
       </div>
       <div class="pdf-info" id="pdf-info"></div>
-      <div class="pdf-validade" id="pdf-validade"></div>
       <table class="pdf-table">
         <thead><tr><th>Descrição</th><th style="text-align:right">Valor</th></tr></thead>
         <tbody id="pdf-itens"></tbody>
+        <tr class="pdf-total-row"><td><b>TOTAL</b></td><td id="pdf-total"></td></tr>
       </table>
-      <div class="pdf-total">
-        <div class="pdf-total-label">Total do Orçamento</div>
-        <div class="pdf-total-value" id="pdf-total"></div>
-      </div>
-      <div id="pdf-obs" style="font-size:13px;color:#475569;margin-bottom:16px"></div>
+      <div id="pdf-condicoes" style="font-size:12px;color:#475569;margin-bottom:12px"></div>
       <div class="pdf-footer">
-        Este orçamento é válido por <span id="pdf-val-dias"></span> dias a partir da data de emissão.<br>
-        Preços sujeitos a alteração após o vencimento.
+        Orçamento válido por <span id="pdf-val"></span> dias | Preços sujeitos a alteração após o vencimento.<br>
+        Granfort Marmoraria — Posto da Mata/BA
       </div>
     </div>
   </div>
 </div>
 
-<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e293b;color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;transition:transform .3s;z-index:999;white-space:nowrap"></div>
+<div id="toast"></div>
 
 <script>
-const SUPABASE_URL = 'https://oozhxbssyofjwkzxdcxy.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vemh4YnNzeW9mandrenhkY3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MDU4NjQsImV4cCI6MjA5Njk4MTg2NH0.Gpl9VdJteWzsF_aYDi80GzjZV9q8OHQ1NiQH4l9nTUk';
+const SUPABASE_URL='https://oozhxbssyofjwkzxdcxy.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vemh4YnNzeW9mandrenhkY3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MDU4NjQsImV4cCI6MjA5Njk4MTg2NH0.Gpl9VdJteWzsF_aYDi80GzjZV9q8OHQ1NiQH4l9nTUk';
 
-const SB = {
-  h(){ return {apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'}; },
+const SB={
+  h(){return{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'};},
   async req(m,p,b){
     const r=await fetch(SUPABASE_URL+'/rest/v1/'+p,{method:m,headers:this.h(),body:b?JSON.stringify(b):undefined});
-    const t=await r.text(); return t?JSON.parse(t):[];
+    const t=await r.text();return t?JSON.parse(t):[];
   },
   get:p=>SB.req('GET',p),
   post:(p,b)=>SB.req('POST',p,b),
@@ -329,40 +370,158 @@ const SB = {
 
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function hoje(){return new Date().toLocaleDateString('pt-BR');}
-function fmtMoney(v){return'R$ '+(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtM(v){return'R$ '+(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-let _toast;
+let _toastT;
 function toast(msg,dur=2500){
   const el=document.getElementById('toast');
-  el.textContent=msg;
-  el.style.transform='translateX(-50%) translateY(0)';
-  clearTimeout(_toast);
-  _toast=setTimeout(()=>el.style.transform='translateX(-50%) translateY(100px)',dur);
+  el.textContent=msg;el.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(_toastT);_toastT=setTimeout(()=>el.style.transform='translateX(-50%) translateY(100px)',dur);
 }
 
 let telaAtual='screen-home';
 function ir(id){
   document.getElementById(telaAtual).classList.remove('active');
   document.getElementById(id).classList.add('active');
-  telaAtual=id;
+  telaAtual=id;window.scrollTo(0,0);
+  if(id==='screen-home')carregarRecentes();
+  if(id==='screen-materiais')carregarMateriais();
+}
+
+// ── Checkboxes de serviços ──────────────
+function toggle(id){
+  document.getElementById(id).classList.toggle('on');
+  calcular();
+}
+function ckAtivo(id){return document.getElementById(id).classList.contains('on');}
+
+// ── Cálculo em tempo real ───────────────
+function calcular(){
+  const comp=Number(document.getElementById('p_comp').value)||0;
+  const larg=Number(document.getElementById('p_larg').value)||0;
+  const pm2=Number(document.getElementById('p_preco_m2').value)||0;
+  const furos=Number(document.getElementById('p_furos').value)||0;
+  const inst=Number(document.getElementById('p_instalacao').value)||0;
+  const desl=Number(document.getElementById('p_deslocamento').value)||0;
+
+  const area=comp*larg/10000;
+  const vPedra=area*pm2;
+  const vSaia=ckAtivo('ck-saia')?(comp/100)*0.15*pm2:0;
+  const vRodo=ckAtivo('ck-rodo')?(comp/100)*0.10*pm2:0;
+  const vCuba=ckAtivo('ck-cuba')?280:0;
+  const vFuros=furos*80;
+  const sub=vPedra+vSaia+vRodo+vCuba+vFuros+inst+desl;
+
+  const box=document.getElementById('calc-box');
+  if(comp&&larg&&pm2){
+    box.style.display='block';
+    document.getElementById('c-area').textContent=(area).toLocaleString('pt-BR',{maximumFractionDigits:2});
+    document.getElementById('c-pm2').textContent=pm2.toLocaleString('pt-BR',{minimumFractionDigits:2});
+    document.getElementById('c-vpedra').textContent=fmtM(vPedra);
+    _show('cr-saia',vSaia>0);document.getElementById('c-vsaia').textContent=fmtM(vSaia);
+    _show('cr-rodo',vRodo>0);document.getElementById('c-vrodo').textContent=fmtM(vRodo);
+    _show('cr-cuba',vCuba>0);
+    _show('cr-furos',vFuros>0);document.getElementById('c-nfuros').textContent=furos;document.getElementById('c-vfuros').textContent=fmtM(vFuros);
+    _show('cr-inst',inst>0);document.getElementById('c-vinst').textContent=fmtM(inst);
+    _show('cr-desl',desl>0);document.getElementById('c-vdesl').textContent=fmtM(desl);
+    document.getElementById('c-sub').textContent=fmtM(sub);
+  } else { box.style.display='none'; }
+
+  window._calc={area,vPedra,vSaia,vRodo,vCuba,vFuros,inst,desl,sub};
+}
+function _show(id,v){document.getElementById(id).style.display=v?'flex':'none';}
+
+// ── Peças do orçamento ──────────────────
+let pecas=[];
+
+function adicionarPeca(){
+  const ambiente=document.getElementById('p_ambiente').value;
+  const descCustom=document.getElementById('p_desc_custom').value.trim();
+  const material=document.getElementById('p_material').value.trim();
+  const espessura=document.getElementById('p_espessura').value;
+  const pm2=Number(document.getElementById('p_preco_m2').value)||0;
+  const comp=Number(document.getElementById('p_comp').value)||0;
+  const larg=Number(document.getElementById('p_larg').value)||0;
+  const posicao=document.getElementById('p_posicao').value.trim();
+  const furos=Number(document.getElementById('p_furos').value)||0;
+  const inst=Number(document.getElementById('p_instalacao').value)||0;
+  const desl=Number(document.getElementById('p_deslocamento').value)||0;
+
+  if(!ambiente){toast('Selecione o tipo de ambiente');return;}
+  if(!comp||!larg){toast('Informe comprimento e largura');return;}
+  if(!pm2){toast('Informe o preço por m²');return;}
+
+  const c=window._calc||{};
+  const descFinal=descCustom||(material?`${ambiente} — ${material}`:ambiente);
+
+  pecas.push({
+    id:uid(),
+    ambiente,desc:descFinal,descCustom,
+    material,espessura,pm2,
+    comp,larg,area:c.area||0,posicao,
+    saia:ckAtivo('ck-saia'),rodo:ckAtivo('ck-rodo'),cuba:ckAtivo('ck-cuba'),furo_torn:ckAtivo('ck-furo'),
+    furos,inst,desl,
+    vPedra:c.vPedra||0,vSaia:c.vSaia||0,vRodo:c.vRodo||0,vCuba:c.vCuba||0,vFuros:c.vFuros||0,
+    sub:c.sub||0,
+  });
+
+  // Limpa campos
+  document.getElementById('p_ambiente').value='';
+  document.getElementById('p_desc_custom').value='';
+  document.getElementById('p_material').value='';
+  document.getElementById('p_preco_m2').value='';
+  document.getElementById('p_comp').value='';
+  document.getElementById('p_larg').value='';
+  document.getElementById('p_posicao').value='';
+  document.getElementById('p_furos').value='0';
+  document.getElementById('p_instalacao').value='0';
+  document.getElementById('p_deslocamento').value='0';
+  ['ck-saia','ck-rodo','ck-cuba','ck-furo'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('calc-box').style.display='none';
+
+  renderPecas();
+  toast('✓ Peça adicionada!');
   window.scrollTo(0,0);
-  if(id==='screen-home') carregarRecentes();
-  if(id==='screen-materiais') carregarMateriais();
+}
+
+function removerPeca(id){
+  pecas=pecas.filter(p=>p.id!==id);
+  renderPecas();
+}
+
+function renderPecas(){
+  const total=pecas.reduce((s,p)=>s+p.sub,0);
+  document.getElementById('total-geral').textContent=fmtM(total);
+
+  const el=document.getElementById('itens-adicionados');
+  if(!pecas.length){el.innerHTML='';return;}
+
+  el.innerHTML=`<div style="margin-bottom:14px">
+    <div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">✅ Peças Adicionadas</div>
+    ${pecas.map(p=>`
+    <div class="item-orc">
+      <button class="item-orc-remove" onclick="removerPeca('${p.id}')">✕</button>
+      <div class="item-orc-title">${p.desc}</div>
+      <div class="item-orc-detail">${p.comp}×${p.larg}cm (${(p.area).toLocaleString('pt-BR',{maximumFractionDigits:2})}m²)${p.posicao?' — '+p.posicao:''}</div>
+      <div class="item-orc-detail">${[p.saia?'Saia':'',p.rodo?'Rodabanca':'',p.cuba?'Cuba':'',p.furos?p.furos+'x furos':''].filter(Boolean).join(' · ')||'Sem extras'}</div>
+      <div class="item-orc-valor">${fmtM(p.sub)}</div>
+    </div>`).join('')}
+  </div>`;
 }
 
 // ── Clientes ────────────────────────────
 async function carregarRecentes(){
   try{
-    const data=await SB.get('clientes?select=id,nome,telefone&order=created_at.desc&limit=5');
-    const dl=document.getElementById('clientes-list');
-    if(dl)dl.innerHTML=data.map(c=>`<option value="${c.nome}" data-tel="${c.telefone||''}">${c.nome}</option>`).join('');
-    const el=document.getElementById('recentes-list');
+    const data=await SB.get('clientes?select=id,nome,telefone&order=created_at.desc&limit=6');
+    const dl=document.getElementById('dl-clientes');
+    if(dl)dl.innerHTML=data.map(c=>`<option value="${c.nome}">`).join('');
+    const el=document.getElementById('recentes-wrap');
     if(!el||!data.length){if(el)el.innerHTML='';return;}
-    el.innerHTML=`<div class="recentes-title">Últimos Clientes</div>`+
+    el.innerHTML=`<div class="recentes"><div class="recentes-title">Últimos Clientes</div>`+
       data.map(c=>`<div class="recente-item" onclick="usarCliente('${c.nome}','${c.telefone||''}')">
         <div><div class="recente-nome">${c.nome}</div><div class="recente-tel">${c.telefone||'—'}</div></div>
-        <span style="color:#1e40af;font-size:20px">→</span>
-      </div>`).join('');
+        <span style="color:#1e40af;font-size:18px">→</span>
+      </div>`).join('')+'</div>';
   }catch(e){}
 }
 
@@ -372,182 +531,162 @@ function usarCliente(nome,tel){
   ir('screen-orcamento');
 }
 
+function iniciarOrcamento(){
+  document.getElementById('orc_cliente_nome').value='';
+  document.getElementById('orc_cliente_tel').value='';
+  document.getElementById('orc_cliente_cidade').value='';
+  pecas=[];renderPecas();
+  ir('screen-orcamento');
+}
+
 async function salvarCliente(){
   const nome=document.getElementById('cl_nome').value.trim();
   const tel=document.getElementById('cl_tel').value.trim();
-  if(!nome||!tel){toast('Nome e telefone obrigatórios');return;}
-  const d={id:uid(),nome,telefone:tel,cidade:document.getElementById('cl_cidade').value.trim(),
-    endereco:document.getElementById('cl_end').value.trim(),tipo:document.getElementById('cl_tipo').value,
+  if(!nome||!tel){toast('Nome e WhatsApp obrigatórios');return;}
+  const d={id:uid(),nome,telefone:tel,
+    cidade:document.getElementById('cl_cidade').value.trim(),
+    endereco:document.getElementById('cl_end').value.trim(),
+    email:document.getElementById('cl_email').value.trim(),
+    tipo:document.getElementById('cl_tipo').value,
     created_at:new Date().toISOString()};
   try{
     await SB.post('clientes',d);
     toast('✓ Cliente salvo!');
-    document.getElementById('cl_nome').value='';
-    document.getElementById('cl_tel').value='';
-    document.getElementById('cl_cidade').value='';
-    document.getElementById('cl_end').value='';
-    // Pré-preenche orçamento
     document.getElementById('orc_cliente_nome').value=nome;
     document.getElementById('orc_cliente_tel').value=tel;
-    setTimeout(()=>ir('screen-orcamento'),800);
-  }catch(e){toast('Erro ao salvar');}
+    pecas=[];renderPecas();
+    setTimeout(()=>ir('screen-orcamento'),700);
+  }catch(e){toast('Erro ao salvar: '+e.message);}
 }
 
-// ── Itens do Orçamento ──────────────────
-let itens=[];
-
-function abrirModal(){
-  document.getElementById('item_tipo').value='';
-  document.getElementById('item_desc').value='';
-  document.getElementById('item_valor').value='';
-  document.getElementById('modalOverlay').classList.add('open');
-  setTimeout(()=>document.getElementById('item_desc').focus(),300);
-}
-
-function fecharModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-
-function preencherDesc(){
-  const sel=document.getElementById('item_tipo').value;
-  if(sel&&sel!=='outro') document.getElementById('item_desc').value=sel;
-}
-
-function confirmarItem(){
-  const desc=document.getElementById('item_desc').value.trim();
-  const val=Number(document.getElementById('item_valor').value)||0;
-  if(!desc){toast('Informe a descrição');return;}
-  if(!val){toast('Informe o valor');return;}
-  itens.push({id:uid(),desc,val});
-  fecharModal();
-  renderItens();
-  toast('✓ Item adicionado');
-}
-
-function removerItem(id){
-  itens=itens.filter(i=>i.id!==id);
-  renderItens();
-}
-
-function renderItens(){
-  const el=document.getElementById('itens-list');
-  el.innerHTML=itens.map(i=>`
-    <div class="item-card">
-      <button class="item-remove" onclick="removerItem('${i.id}')">✕</button>
-      <div class="item-desc">${i.desc}</div>
-      <div class="item-val">${fmtMoney(i.val)}</div>
-    </div>`).join('');
-  const total=itens.reduce((s,i)=>s+i.val,0);
-  document.getElementById('total-display').textContent=fmtMoney(total);
-}
-
-// ── PDF ─────────────────────────────────
-function gerarPDF(){
+// ── Salvar orçamento completo ───────────
+async function salvarOrcamento(){
   const cliente=document.getElementById('orc_cliente_nome').value.trim();
-  if(!cliente){toast('Informe o nome do cliente');return;}
-  if(!itens.length){toast('Adicione pelo menos 1 item');return;}
+  if(!cliente){toast('Informe o cliente');return;}
+  if(!pecas.length){toast('Adicione pelo menos 1 peça');return;}
 
-  const tel=document.getElementById('orc_cliente_tel').value.trim();
-  const val=document.getElementById('orc_validade').value;
-  const obs=document.getElementById('orc_obs').value.trim();
-  const total=itens.reduce((s,i)=>s+i.val,0);
+  const total=pecas.reduce((s,p)=>s+p.sub,0);
   const numOrc='ORC-'+Date.now().toString().slice(-5);
 
-  const vencimento=new Date();
-  vencimento.setDate(vencimento.getDate()+Number(val));
-  const dtVenc=vencimento.toLocaleDateString('pt-BR');
+  // Monta observação completa com detalhes técnicos de cada peça
+  const detalhesTecnicos=pecas.map((p,i)=>`[${i+1}] ${p.desc} | ${p.comp}×${p.larg}cm (${(p.area).toFixed(2)}m²) | ${p.material} ${p.espessura} | R$/m² ${p.pm2}${p.posicao?' | '+p.posicao:''}${p.saia?' | Saia':''}${p.rodo?' | Rodabanca':''}${p.cuba?' | Cuba':''}${p.furos?' | '+p.furos+'x furos':''}`).join('\n');
+
+  const obsInt=document.getElementById('orc_obs_int').value.trim();
+
+  const d={
+    id:uid(),
+    numero:numOrc,
+    status:'aberto',
+    tipo_ambiente:pecas.map(p=>p.ambiente).join(' + '),
+    material:pecas.map(p=>p.material).filter(Boolean).join(', '),
+    area_m2:pecas.reduce((s,p)=>s+p.area,0),
+    comprimento_cm:pecas[0]?.comp||0,
+    largura_cm:pecas[0]?.larg||0,
+    preco_m2:pecas[0]?.pm2||0,
+    valor_instalacao:pecas.reduce((s,p)=>s+p.inst,0),
+    valor_deslocamento:pecas.reduce((s,p)=>s+p.desl,0),
+    valor_total:total,
+    tem_saia:pecas.some(p=>p.saia),
+    tem_rodabanca:pecas.some(p=>p.rodo),
+    tem_cuba:pecas.some(p=>p.cuba),
+    qtd_furos:pecas.reduce((s,p)=>s+p.furos,0),
+    observacoes:`${detalhesTecnicos}${obsInt?'\n\nObs: '+obsInt:''}`,
+    created_at:new Date().toISOString(),
+  };
+
+  try{
+    await SB.post('orcamentos',d);
+    toast('✓ Orçamento salvo no sistema!',3000);
+  }catch(e){toast('Erro ao salvar: '+e.message);}
+}
+
+// ── Gerar PDF ───────────────────────────
+function gerarPDF(){
+  const cliente=document.getElementById('orc_cliente_nome').value.trim();
+  if(!cliente){toast('Informe o cliente');return;}
+  if(!pecas.length){toast('Adicione pelo menos 1 peça');return;}
+
+  const total=pecas.reduce((s,p)=>s+p.sub,0);
+  const val=document.getElementById('orc_validade').value;
+  const cond=document.getElementById('orc_condicoes').value.trim();
+  const numOrc='ORC-'+Date.now().toString().slice(-5);
+
+  const venc=new Date();venc.setDate(venc.getDate()+Number(val));
 
   document.getElementById('pdf-info').innerHTML=`
-    <div class="pdf-info-item"><label>Cliente</label><b>${cliente}</b></div>
-    <div class="pdf-info-item"><label>Nº Orçamento</label><b>${numOrc}</b></div>
-    <div class="pdf-info-item"><label>Data</label><b>${hoje()}</b></div>
-    <div class="pdf-info-item"><label>Válido até</label><b>${dtVenc}</b></div>`;
+    <div><label>Cliente</label><b>${cliente}</b></div>
+    <div><label>Nº Orçamento</label><b>${numOrc}</b></div>
+    <div><label>Data</label><b>${hoje()}</b></div>
+    <div><label>Válido até</label><b>${venc.toLocaleDateString('pt-BR')}</b></div>`;
 
-  document.getElementById('pdf-validade').textContent=`Orçamento válido por ${val} dias — Vence em ${dtVenc}`;
-  document.getElementById('pdf-val-dias').textContent=val;
-
+  // PDF: só descrição e valor — sem medidas
   document.getElementById('pdf-itens').innerHTML=
-    itens.map(i=>`<tr><td>${i.desc}</td><td style="text-align:right;font-weight:700;color:#1e40af">${fmtMoney(i.val)}</td></tr>`).join('');
+    pecas.map(p=>`<tr><td>${p.desc}</td><td>${fmtM(p.sub)}</td></tr>`).join('');
 
-  document.getElementById('pdf-total').textContent=fmtMoney(total);
-
-  document.getElementById('pdf-obs').innerHTML=obs?`<b>Observações:</b> ${obs}`:'';
-
-  // Salva no Supabase em background
-  SB.post('orcamentos',{
-    id:uid(),numero:numOrc,status:'aberto',valor_total:total,
-    observacoes:obs,tipo_ambiente:'Geral',created_at:new Date().toISOString()
-  }).catch(()=>{});
+  document.getElementById('pdf-total').textContent=fmtM(total);
+  document.getElementById('pdf-val').textContent=val;
+  document.getElementById('pdf-condicoes').innerHTML=cond?`<b>Condições:</b> ${cond}`:'';
 
   ir('screen-pdf');
 }
 
-function enviarWhatsApp(){
+function enviarWpp(){
   const cliente=document.getElementById('orc_cliente_nome').value.trim();
-  if(!cliente){toast('Informe o nome do cliente');return;}
-  if(!itens.length){toast('Adicione pelo menos 1 item');return;}
-
+  if(!cliente||!pecas.length){toast('Preencha cliente e peças antes');return;}
   const tel=document.getElementById('orc_cliente_tel').value.replace(/\D/g,'');
-  const total=itens.reduce((s,i)=>s+i.val,0);
+  const total=pecas.reduce((s,p)=>s+p.sub,0);
+  const val=document.getElementById('orc_validade').value;
   const numOrc='ORC-'+Date.now().toString().slice(-5);
 
   let msg=`*Orçamento ${numOrc} — Granfort Marmoraria*\n`;
-  msg+=`*Cliente:* ${cliente}\n`;
-  msg+=`*Data:* ${hoje()}\n\n`;
-  msg+=`*Itens:*\n`;
-  itens.forEach(i=>{ msg+=`• ${i.desc}: ${fmtMoney(i.val)}\n`; });
-  msg+=`\n*Total: ${fmtMoney(total)}*\n\n`;
-  msg+=`_Orçamento válido por ${document.getElementById('orc_validade').value} dias._\n`;
-  msg+=`_Granfort Marmoraria — Posto da Mata/BA_`;
+  msg+=`*Cliente:* ${cliente}\n*Data:* ${hoje()}\n\n`;
+  pecas.forEach(p=>{ msg+=`• ${p.desc}: ${fmtM(p.sub)}\n`; });
+  msg+=`\n*Total: ${fmtM(total)}*\n`;
+  msg+=`_Válido por ${val} dias_\n\n_Granfort Marmoraria — Posto da Mata/BA_`;
 
-  const url=tel
-    ?`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`
-    :`https://wa.me/?text=${encodeURIComponent(msg)}`;
-
+  const url=tel?`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`:`https://wa.me/?text=${encodeURIComponent(msg)}`;
   window.open(url,'_blank');
 }
 
-function compartilharWhatsApp(){
-  const cliente=document.getElementById('orc_cliente_nome').value.trim();
-  const tel=document.getElementById('orc_cliente_tel').value.replace(/\D/g,'');
-  const total=itens.reduce((s,i)=>s+i.val,0);
-  const numOrc=document.getElementById('pdf-info').querySelector('b:nth-child(2)')?.textContent||'ORC';
-
-  let msg=`*Orçamento ${numOrc} — Granfort Marmoraria*\n`;
-  msg+=`*Cliente:* ${cliente}\n*Data:* ${hoje()}\n\n*Itens:*\n`;
-  itens.forEach(i=>{ msg+=`• ${i.desc}: ${fmtMoney(i.val)}\n`; });
-  msg+=`\n*Total: ${fmtMoney(total)}*\n\n_Granfort Marmoraria — Posto da Mata/BA_`;
-
-  const url=tel
-    ?`https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`
-    :`https://wa.me/?text=${encodeURIComponent(msg)}`;
-  window.open(url,'_blank');
-}
+function compartilharWpp(){enviarWpp();}
 
 // ── Materiais ────────────────────────────
 async function carregarMateriais(){
   try{
     const data=await SB.get('materiais?select=*&order=tipo.asc,nome.asc');
+    // Carrega datalist também
+    const dl=document.getElementById('dl-materiais');
+    if(dl)dl.innerHTML=data.map(m=>`<option value="${m.nome}" data-preco="${m.preco_venda_m2||0}">`).join('');
+
     const el=document.getElementById('lista-materiais');
-    if(!data.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#94a3b8">Nenhum material cadastrado</div>';return;}
+    if(!data.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#94a3b8">Nenhum material cadastrado<br><br>Cadastre no sistema desktop</div>';return;}
     const grupos={};
-    data.forEach(m=>{ if(!grupos[m.tipo])grupos[m.tipo]=[]; grupos[m.tipo].push(m); });
-    el.innerHTML=Object.entries(grupos).map(([tipo,itens])=>`
-      <div style="margin-bottom:20px">
+    data.forEach(m=>{if(!grupos[m.tipo])grupos[m.tipo]=[];grupos[m.tipo].push(m);});
+    el.innerHTML=Object.entries(grupos).map(([tipo,items])=>`
+      <div style="margin-bottom:18px">
         <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">${tipo}</div>
-        ${itens.map(m=>`
-          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+        ${items.map(m=>`
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:11px;padding:13px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center"
+               onclick="usarMaterial('${m.nome}',${m.preco_venda_m2||0})">
             <div>
               <div style="font-weight:600;font-size:14px">${m.nome}</div>
               <div style="font-size:12px;color:#64748b">${m.espessura||''}</div>
             </div>
             <div style="text-align:right">
-              <div style="font-weight:700;color:#1e40af;font-size:15px">R$ ${(m.preco_venda_m2||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}/m²</div>
-              <div style="font-size:11px;color:#94a3b8">custo R$ ${(m.preco_custo_m2||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</div>
+              <div style="font-weight:700;color:#1e40af">${fmtM(m.preco_venda_m2)}/m²</div>
+              <div style="font-size:11px;color:#94a3b8">Toque para usar</div>
             </div>
           </div>`).join('')}
       </div>`).join('');
   }catch(e){document.getElementById('lista-materiais').innerHTML='<div style="text-align:center;padding:40px;color:#ef4444">Erro ao carregar</div>';}
+}
+
+function usarMaterial(nome,preco){
+  document.getElementById('p_material').value=nome;
+  document.getElementById('p_preco_m2').value=preco;
+  calcular();
+  ir('screen-orcamento');
+  toast('✓ Material selecionado: '+nome);
 }
 
 carregarRecentes();
