@@ -8,8 +8,12 @@ echo.
 :: Verifica Node.js
 node --version >nul 2>&1
 if %errorlevel% neq 0 (
+    echo Node.js nao encontrado. Baixando instalador...
+    echo.
+    powershell -Command "Invoke-WebRequest -Uri 'https://nodejs.org/dist/v20.19.0/node-v20.19.0-x64.msi' -OutFile '%TEMP%\nodejs.msi' -UseBasicParsing"
     echo Instalando Node.js...
-    winget install OpenJS.NodeJS.LTS --silent --accept-package-agreements --accept-source-agreements
+    msiexec /i "%TEMP%\nodejs.msi" /quiet /norestart
+    del "%TEMP%\nodejs.msi"
     echo.
     echo FECHE este terminal, abra um NOVO e rode este script de novo.
     pause
@@ -28,10 +32,18 @@ echo Instalando Vercel CLI...
 call npm install -g vercel
 
 echo.
-echo Instalando Git (se necessario)...
+:: Verifica Git
 git --version >nul 2>&1
 if %errorlevel% neq 0 (
-    winget install Git.Git --silent --accept-package-agreements --accept-source-agreements
+    echo Baixando Git...
+    powershell -Command "Invoke-WebRequest -Uri 'https://github.com/git-for-windows/git/releases/download/v2.45.2.windows.1/Git-2.45.2-64-bit.exe' -OutFile '%TEMP%\git.exe' -UseBasicParsing"
+    echo Instalando Git...
+    "%TEMP%\git.exe" /VERYSILENT /NORESTART
+    del "%TEMP%\git.exe"
+    echo Git instalado!
+) else (
+    echo Git OK:
+    git --version
 )
 
 echo.
