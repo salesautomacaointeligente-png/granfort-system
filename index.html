@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>GranfortSystem — Gestão de Marmoraria</title>
+<style>
+:root{
+  --primary:#1e40af;--primary-dark:#1e3a8a;--primary-soft:#eff6ff;
+  --success:#10b981;--danger:#ef4444;--warning:#f59e0b;--purple:#8b5cf6;
+  --text:#0f172a;--text-soft:#64748b;--text-muted:#94a3b8;
+  --border:#e2e8f0;--card:#fff;--bg:#f1f5f9;
+  --sidebar-w:220px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:14px}
+
+/* Layout */
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:#0f172a;color:#e2e8f0;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;transition:transform .3s}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:40}
+.topbar-title{font-weight:700;font-size:16px;flex:1}
+.topbar-actions{display:flex;gap:8px;align-items:center}
+#content{padding:20px;flex:1}
+
+/* Sidebar */
+.brand{padding:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-name{font-weight:800;font-size:16px;color:#fff}
+.brand-sub{font-size:11px;color:#64748b;margin-top:2px}
+.nav-section{padding:8px 12px 4px;font-size:10px;font-weight:700;color:#475569;letter-spacing:1.5px;text-transform:uppercase;margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;color:#94a3b8;font-size:13px;font-weight:500;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#e2e8f0}
+.nav-item.active{background:rgba(30,64,175,.3);color:#93c5fd;border-left-color:#3b82f6}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.7}
+.nav-item.active svg{opacity:1}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid transparent;transition:all .15s;cursor:pointer}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:6px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:#fff;color:var(--text);border-color:var(--border)}
+.btn-secondary:hover{background:var(--bg)}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.btn-ghost{color:var(--text-soft)}
+.btn-ghost:hover{background:#f1f5f9;color:var(--text)}
+.btn-purple{background:var(--purple);color:#fff}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.card-title{font-weight:700;font-size:14px;flex:1}
+.card-body{padding:20px}
+.card-body.no-pad{padding:0}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* KPI */
+.kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px}
+.kpi-label{font-size:12px;color:var(--text-soft);font-weight:500;margin-bottom:4px}
+.kpi-value{font-size:24px;font-weight:800;color:var(--text)}
+
+/* Table */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8fafc}
+.tbl td.num{text-align:right}
+.tbl th.num{text-align:right}
+.tbl td.center{text-align:center}
+.actions{display:flex;gap:4px;white-space:nowrap}
+
+/* Form */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text-soft);margin-bottom:5px}
+.input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;transition:border-color .15s;background:#fff}
+.input:focus{border-color:var(--primary)}
+.select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;background:#fff}
+.select:focus{border-color:var(--primary)}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-success{background:#dcfce7;color:#166534}
+.badge-danger{background:#fee2e2;color:#991b1b}
+.badge-warning{background:#fef9c3;color:#854d0e}
+.badge-info{background:#dbeafe;color:#1e40af}
+.badge-purple{background:#ede9fe;color:#5b21b6}
+.badge-gray{background:#f1f5f9;color:#475569}
+
+/* Modal */
+#modalRoot .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+#modalRoot .modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+#modalRoot .modal.lg{max-width:720px}
+#modalRoot .modal.xl{max-width:900px}
+#modalRoot .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+#modalRoot .modal-title{font-weight:700;font-size:16px;flex:1}
+#modalRoot .modal-body{padding:20px;overflow-y:auto;flex:1}
+#modalRoot .modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.close-btn{background:none;border:none;cursor:pointer;color:var(--text-muted);padding:4px;border-radius:6px}
+.close-btn:hover{background:var(--bg)}
+
+/* Toast */
+#toastContainer{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;animation:slideIn .3s ease;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.toast.success{background:#10b981;color:#fff}
+.toast.error{background:#ef4444;color:#fff}
+.toast.warning{background:#f59e0b;color:#fff}
+.toast.default{background:#1e293b;color:#fff}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Utils */
+.mb-sm{margin-bottom:8px}.mb-md{margin-bottom:16px}.mb-lg{margin-bottom:24px}
+.mt-sm{margin-top:8px}.mt-md{margin-top:16px}
+.flex{display:flex}.gap-sm{gap:8px}.gap-md{gap:16px}
+.flex-between{justify-content:space-between}.items-center{align-items:center}
+.text-soft{color:var(--text-soft)}.text-sm{font-size:12px}.fw-700{font-weight:700}
+.empty{text-align:center;padding:60px 20px;color:var(--text-soft)}
+.empty h3{font-size:16px;margin-bottom:8px}
+.spin{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Pipeline */
+.pipeline{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.pipeline-col{min-width:220px;background:#f8fafc;border-radius:12px;border:1px solid var(--border)}
+.pipeline-col-header{padding:12px 14px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pipeline-col-body{padding:10px;display:flex;flex-direction:column;gap:8px;min-height:200px}
+.pipeline-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:box-shadow .15s}
+.pipeline-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.pipeline-card-title{font-weight:600;font-size:13px;margin-bottom:4px}
+.pipeline-card-sub{font-size:11px;color:var(--text-soft)}
+
+/* Kanban */
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.kanban-col{min-width:200px;background:#f8fafc;border-radius:12px;border:1px solid var(--border)}
+.kanban-col-header{padding:10px 14px;font-weight:700;font-size:12px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px}
+.kanban-col-body{padding:8px;display:flex;flex-direction:column;gap:6px;min-height:150px}
+.kanban-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:12px}
+.kanban-card-title{font-weight:600;margin-bottom:2px}
+
+/* Mobile */
+.menu-btn{display:none;padding:8px;border-radius:8px;background:none;border:1.5px solid var(--border)}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .menu-btn{display:flex;align-items:center;justify-content:center}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .overlay-menu{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
+  .overlay-menu.open{display:block}
+}
+</style>
+</head>
+<body>
+<div id="toastContainer"></div>
+<div id="modalRoot"></div>
+<div id="overlayMenu" class="overlay-menu" onclick="toggleMenu()"></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-name">💎 GranfortSystem</div>
+      <div class="brand-sub">Marmoraria Granfort — Posto da Mata</div>
+    </div>
+
+    <div class="nav-section">Comercial</div>
+    <div class="nav-item" onclick="nav('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="nav('clientes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Clientes
+    </div>
+    <div class="nav-item" onclick="nav('orcamentos')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/></svg>
+      Orçamentos
+    </div>
+    <div class="nav-item" onclick="nav('pipeline')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H3"/><path d="m15 5 7 7-7 7"/></svg>
+      Pipeline de Vendas
+    </div>
+
+    <div class="nav-section">Produção</div>
+    <div class="nav-item" onclick="nav('os')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+      Ordens de Serviço
+    </div>
+    <div class="nav-item" onclick="nav('kanban')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="11" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+      Kanban de Produção
+    </div>
+    <div class="nav-item" onclick="nav('agenda')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Agenda
+    </div>
+
+    <div class="nav-section">Estoque</div>
+    <div class="nav-item" onclick="nav('chapas')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="15" x2="22" y2="15"/><line x1="8" y1="9" x2="8" y2="21"/></svg>
+      Chapas & Retalhos
+    </div>
+    <div class="nav-item" onclick="nav('materiais')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      Materiais & Peças
+    </div>
+
+    <div class="nav-section">Financeiro</div>
+    <div class="nav-item" onclick="nav('caixa')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Fechamento de Caixa
+    </div>
+    <div class="nav-item" onclick="nav('financeiro')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Contas & Fluxo
+    </div>
+    <div class="nav-item" onclick="nav('relatorios')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Relatórios
+    </div>
+
+    <div class="nav-section">Cadastros</div>
+    <div class="nav-item" onclick="nav('config')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Configurações
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="menu-btn" onclick="toggleMenu()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title" id="pageTitle">Dashboard</div>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </div>
+
+    <div id="content"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   GRANFORTSYSTEM — Sistema de Gestão de Marmoraria
+   Granfort Marmoraria | Posto da Mata - BA
+   ============================================================ */
+
+const SUPABASE_URL = 'https://oozhxbssyofjwkzxdcxy.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vemh4YnNzeW9mandrenhkY3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MDU4NjQsImV4cCI6MjA5Njk4MTg2NH0.Gpl9VdJteWzsF_aYDi80GzjZV9q8OHQ1NiQH4l9nTUk';
+
+const EMPRESA = { nome:'Granfort Marmoraria', cidade:'Posto da Mata', uf:'BA', raio_km:150 };
+
+// ── Supabase ──────────────────────────────────────────────
+const SB = {
+  h(extra={}){ return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation',...extra}; },
+  async req(method,path,body,extra={}){
+    const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{method,headers:this.h(extra),body:body?JSON.stringify(body):undefined});
+    if(!r.ok){const t=await r.text();throw new Error(t||r.status);}
+    const t=await r.text();return t?JSON.parse(t):[];
+  },
+  get:(p)=>SB.req('GET',p),
+  post:(p,b)=>SB.req('POST',p,b),
+  patch:(p,b)=>SB.req('PATCH',p,b,{'Prefer':'return=minimal'}),
+  del:(p)=>SB.req('DELETE',p,null,{'Prefer':'return=minimal'}),
+  upsert:(p,b,conflict)=>SB.req('POST',`${p}?on_conflict=${conflict}`,Array.isArray(b)?b:[b],{'Prefer':'resolution=merge-duplicates,return=minimal'}),
+};
+
+// ── Utils ────────────────────────────────────────────────
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function hoje(){return new Date().toISOString().slice(0,10);}
+function fmtDate(s){if(!s)return'—';return new Date(s+'T00:00').toLocaleDateString('pt-BR');}
+function fmtMoney(v){return'R$ '+(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtNum(v,d=2){return(Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:d});}
+
+function toast(msg,type='default',dur=3500){
+  const el=document.createElement('div');
+  el.className='toast '+type;el.textContent=msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(()=>el.remove(),dur);
+}
+
+function openModal({title,body,footer,size=''}){
+  document.getElementById('modalRoot').innerHTML=`
+    <div class="overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal ${size}">
+        <div class="modal-header">
+          <div class="modal-title">${title}</div>
+          <button class="close-btn" onclick="closeModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">${body}</div>
+        ${footer?`<div class="modal-footer">${footer}</div>`:''}
+      </div>
+    </div>`;
+}
+function closeModal(){document.getElementById('modalRoot').innerHTML='';}
+
+function setPage(title,actions=''){
+  document.getElementById('pageTitle').textContent=title;
+  document.getElementById('topbarActions').innerHTML=actions;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.getAttribute('onclick')===`nav('${currentPage}')`));
+}
+
+function toggleMenu(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlayMenu').classList.toggle('open');
+}
+
+// ── Roteamento ───────────────────────────────────────────
+let currentPage='';
+function nav(page){
+  currentPage=page;
+  if(window.innerWidth<=768){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlayMenu').classList.remove('open');
+  }
+  const pages={dashboard:pgDashboard,clientes:pgClientes,orcamentos:pgOrcamentos,pipeline:pgPipeline,
+    os:pgOS,kanban:pgKanban,agenda:pgAgenda,chapas:pgChapas,materiais:pgMateriais,
+    caixa:pgCaixa,financeiro:pgFinanceiro,relatorios:pgRelatorios,config:pgConfig};
+  if(pages[page])pages[page]();
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+async function pgDashboard(){
+  setPage('Dashboard','');
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div><h3>Carregando...</h3></div>`;
+  try{
+    const [clientes,orcamentos,os]=await Promise.all([
+      SB.get('clientes?select=id,nome&limit=1000'),
+      SB.get('orcamentos?select=id,status,valor_total&limit=1000'),
+      SB.get('ordens_servico?select=id,status&limit=1000'),
+    ]);
+    const orc_abertos=orcamentos.filter(o=>o.status==='aberto').length;
+    const orc_fechados=orcamentos.filter(o=>o.status==='fechado');
+    const fat_mes=orc_fechados.reduce((s,o)=>s+(Number(o.valor_total)||0),0);
+    const os_producao=os.filter(o=>['medição','corte','acabamento','separação'].includes(o.status)).length;
+
+    document.getElementById('content').innerHTML=`
+      <div class="grid-4 mb-md">
+        <div class="kpi"><div class="kpi-label">Clientes Cadastrados</div><div class="kpi-value">${clientes.length}</div></div>
+        <div class="kpi"><div class="kpi-label">Orçamentos em Aberto</div><div class="kpi-value" style="color:var(--warning)">${orc_abertos}</div></div>
+        <div class="kpi"><div class="kpi-label">OS em Produção</div><div class="kpi-value" style="color:var(--primary)">${os_producao}</div></div>
+        <div class="kpi"><div class="kpi-label">Faturamento (Fechados)</div><div class="kpi-value" style="color:var(--success);font-size:18px">${fmtMoney(fat_mes)}</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Últimos Orçamentos</div><button class="btn btn-sm btn-primary" onclick="nav('orcamentos')">Ver todos</button></div>
+          <div class="card-body no-pad">
+            <div class="tbl-wrap"><table class="tbl">
+              <thead><tr><th>Cliente</th><th>Tipo</th><th class="num">Valor</th><th>Status</th></tr></thead>
+              <tbody id="dash-orc"></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Produção — Kanban</div><button class="btn btn-sm btn-primary" onclick="nav('kanban')">Abrir</button></div>
+          <div class="card-body">
+            ${['medição','corte','acabamento','instalação'].map(s=>`
+              <div class="flex flex-between items-center mb-sm">
+                <span style="font-size:13px">${s.charAt(0).toUpperCase()+s.slice(1)}</span>
+                <span class="badge badge-info">${os.filter(o=>o.status===s).length}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+
+    // Busca últimos orçamentos com nome do cliente
+    const ultOrc=await SB.get('orcamentos?select=id,tipo_ambiente,valor_total,status,clientes(nome)&order=created_at.desc&limit=6').catch(()=>[]);
+    const tbody=document.getElementById('dash-orc');
+    if(tbody)tbody.innerHTML=ultOrc.length?ultOrc.map(o=>`<tr>
+      <td>${o.clientes?.nome||'—'}</td><td>${o.tipo_ambiente||'—'}</td>
+      <td class="num"><b>${fmtMoney(o.valor_total)}</b></td>
+      <td><span class="badge ${o.status==='fechado'?'badge-success':o.status==='cancelado'?'badge-danger':'badge-warning'}">${o.status}</span></td>
+    </tr>`).join(''):`<tr><td colspan="4" class="empty">Nenhum orçamento ainda</td></tr>`;
+  }catch(e){
+    document.getElementById('content').innerHTML=`<div class="empty"><h3>Erro ao carregar</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// CLIENTES
+// ══════════════════════════════════════════════════════════
+async function pgClientes(){
+  setPage('Clientes',`<button class="btn btn-primary btn-sm" onclick="modalNovoCliente()">+ Novo Cliente</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('clientes?select=*&order=nome.asc');
+    document.getElementById('content').innerHTML=`
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">${data.length} clientes</div>
+          <input class="input" style="max-width:260px" placeholder="Buscar cliente..." oninput="filtrarClientes(this.value,'${encodeURIComponent(JSON.stringify(data))}')">
+        </div>
+        <div class="card-body no-pad" id="listaClientes">
+          ${renderTabelaClientes(data)}
+        </div>
+      </div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+function renderTabelaClientes(data){
+  if(!data.length)return`<div class="empty"><h3>Nenhum cliente cadastrado</h3></div>`;
+  return`<div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>Nome</th><th>Telefone</th><th>Cidade</th><th>Tipo</th><th></th></tr></thead>
+    <tbody>${data.map(c=>`<tr>
+      <td><b>${c.nome}</b></td>
+      <td>${c.telefone||'—'}</td>
+      <td>${c.cidade||'—'}</td>
+      <td><span class="badge badge-gray">${c.tipo||'Pessoa Física'}</span></td>
+      <td class="actions">
+        <button class="btn btn-sm btn-ghost" onclick="modalEditarCliente('${c.id}')">✏️</button>
+        <button class="btn btn-sm btn-primary" onclick="novoOrcamentoCliente('${c.id}','${c.nome}')">+ Orç.</button>
+      </td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+function filtrarClientes(q,enc){
+  const data=JSON.parse(decodeURIComponent(enc));
+  const f=data.filter(c=>(c.nome||'').toLowerCase().includes(q.toLowerCase())||(c.telefone||'').includes(q));
+  document.getElementById('listaClientes').innerHTML=renderTabelaClientes(f);
+}
+
+function modalNovoCliente(id=null,dados={}){
+  openModal({
+    title:id?'Editar Cliente':'Novo Cliente',
+    size:'',
+    body:`
+      <div class="grid-2">
+        <div class="field"><label>Nome *</label><input class="input" id="cl_nome" value="${dados.nome||''}" placeholder="Nome completo"></div>
+        <div class="field"><label>CPF/CNPJ</label><input class="input" id="cl_doc" value="${dados.cpf_cnpj||''}" placeholder="000.000.000-00"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Telefone *</label><input class="input" id="cl_tel" value="${dados.telefone||''}" placeholder="(00) 00000-0000"></div>
+        <div class="field"><label>E-mail</label><input class="input" id="cl_email" value="${dados.email||''}" placeholder="email@email.com"></div>
+      </div>
+      <div class="field"><label>Endereço</label><input class="input" id="cl_end" value="${dados.endereco||''}" placeholder="Rua, número, bairro"></div>
+      <div class="grid-2">
+        <div class="field"><label>Cidade</label><input class="input" id="cl_cidade" value="${dados.cidade||''}" placeholder="Cidade"></div>
+        <div class="field"><label>Tipo</label>
+          <select class="select" id="cl_tipo">
+            ${['Pessoa Física','Pessoa Jurídica','Arquiteto','Construtora'].map(t=>`<option ${dados.tipo===t?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Observações</label><textarea class="input" id="cl_obs" rows="2" placeholder="Observações...">${dados.observacoes||''}</textarea></div>`,
+    footer:`
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarCliente('${id||''}')">Salvar</button>`
+  });
+}
+
+async function modalEditarCliente(id){
+  try{
+    const [c]=await SB.get(`clientes?id=eq.${id}&select=*`);
+    modalNovoCliente(id,c);
+  }catch(e){toast('Erro ao buscar cliente','error');}
+}
+
+async function salvarCliente(id){
+  const d={
+    nome:document.getElementById('cl_nome').value.trim(),
+    cpf_cnpj:document.getElementById('cl_doc').value.trim(),
+    telefone:document.getElementById('cl_tel').value.trim(),
+    email:document.getElementById('cl_email').value.trim(),
+    endereco:document.getElementById('cl_end').value.trim(),
+    cidade:document.getElementById('cl_cidade').value.trim(),
+    tipo:document.getElementById('cl_tipo').value,
+    observacoes:document.getElementById('cl_obs').value.trim(),
+  };
+  if(!d.nome){toast('Nome obrigatório','error');return;}
+  try{
+    if(id){await SB.patch(`clientes?id=eq.${id}`,d);}
+    else{d.id=uid();d.created_at=new Date().toISOString();await SB.post('clientes',d);}
+    toast('Cliente salvo!','success');closeModal();pgClientes();
+  }catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// ORÇAMENTOS
+// ══════════════════════════════════════════════════════════
+async function pgOrcamentos(){
+  setPage('Orçamentos',`<button class="btn btn-primary btn-sm" onclick="modalNovoOrcamento()">+ Novo Orçamento</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('orcamentos?select=*,clientes(nome)&order=created_at.desc&limit=100');
+    document.getElementById('content').innerHTML=`
+      <div class="card">
+        <div class="card-header"><div class="card-title">${data.length} orçamentos</div></div>
+        <div class="card-body no-pad">
+          <div class="tbl-wrap"><table class="tbl">
+            <thead><tr><th>Nº</th><th>Cliente</th><th>Ambiente</th><th>Material</th><th class="num">Área m²</th><th class="num">Total</th><th>Status</th><th></th></tr></thead>
+            <tbody>${data.length?data.map(o=>`<tr>
+              <td><b>#${o.numero||o.id.slice(-4).toUpperCase()}</b></td>
+              <td>${o.clientes?.nome||'—'}</td>
+              <td>${o.tipo_ambiente||'—'}</td>
+              <td>${o.material||'—'}</td>
+              <td class="num">${fmtNum(o.area_m2)} m²</td>
+              <td class="num"><b>${fmtMoney(o.valor_total)}</b></td>
+              <td><span class="badge ${o.status==='fechado'?'badge-success':o.status==='cancelado'?'badge-danger':'badge-warning'}">${o.status||'aberto'}</span></td>
+              <td class="actions">
+                <button class="btn btn-sm btn-ghost" onclick="verOrcamento('${o.id}')">Ver</button>
+                <button class="btn btn-sm btn-success" onclick="aprovarOrcamento('${o.id}')">✓ Fechar</button>
+              </td>
+            </tr>`).join(''):`<tr><td colspan="8"><div class="empty">Nenhum orçamento</div></td></tr>`}</tbody>
+          </table></div>
+        </div>
+      </div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+async function modalNovoOrcamento(clienteId='',clienteNome=''){
+  let clientes=[];
+  try{clientes=await SB.get('clientes?select=id,nome&order=nome.asc');}catch(e){}
+  let materiais=[];
+  try{materiais=await SB.get('materiais?select=id,nome,preco_venda_m2&where=tipo=eq.pedra&order=nome.asc').catch(()=>[]);}catch(e){}
+
+  openModal({
+    title:'Novo Orçamento',size:'xl',
+    body:`
+      <div class="grid-2 mb-md">
+        <div class="field"><label>Cliente *</label>
+          <select class="select" id="orc_cliente">
+            <option value="">Selecione o cliente</option>
+            ${clientes.map(c=>`<option value="${c.id}" ${c.id===clienteId?'selected':''}>${c.nome}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field"><label>Tipo de Ambiente *</label>
+          <select class="select" id="orc_ambiente" onchange="atualizarCamposOrc()">
+            ${['Cozinha','Banheiro','Lavabo','Soleira','Escada','Piso','Fachada','Ilha','Bancada Geral','Outros'].map(a=>`<option>${a}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="grid-2 mb-md">
+        <div class="field"><label>Material</label>
+          <select class="select" id="orc_material">
+            <option value="">Selecione</option>
+            ${materiais.map(m=>`<option value="${m.id}" data-preco="${m.preco_venda_m2}">${m.nome}</option>`).join('')}
+            <option value="outro">Outro (digitar)</option>
+          </select>
+        </div>
+        <div class="field"><label>Espessura</label>
+          <select class="select" id="orc_espessura">
+            <option>2cm</option><option>3cm</option><option>4cm</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:12px">📐 Medidas</div>
+        <div class="grid-2">
+          <div class="field"><label>Comprimento (cm)</label><input class="input" id="orc_comp" type="number" placeholder="Ex: 280" oninput="calcularOrc()"></div>
+          <div class="field"><label>Largura (cm)</label><input class="input" id="orc_larg" type="number" placeholder="Ex: 60" oninput="calcularOrc()"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Preço por m² (R$)</label><input class="input" id="orc_preco_m2" type="number" placeholder="450.00" oninput="calcularOrc()"></div>
+          <div class="field"><label>Área (m²)</label><input class="input" id="orc_area" readonly style="background:#f1f5f9;font-weight:700"></div>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
+        <div style="font-weight:700;font-size:13px;margin-bottom:12px">➕ Serviços Adicionais</div>
+        <div class="grid-2">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" id="orc_saia" onchange="calcularOrc()"> Saia (15cm)
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" id="orc_rodo" onchange="calcularOrc()"> Rodabanca
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" id="orc_cuba_check" onchange="calcularOrc()"> Cuba inclusa
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" id="orc_furo" onchange="calcularOrc()"> Furo torneira
+          </label>
+        </div>
+        <div class="grid-2 mt-sm">
+          <div class="field"><label>Furos (quantidade)</label><input class="input" id="orc_furos_qtd" type="number" value="0" oninput="calcularOrc()"></div>
+          <div class="field"><label>Deslocamento (R$)</label><input class="input" id="orc_deslocamento" type="number" value="0" oninput="calcularOrc()"></div>
+        </div>
+        <div class="field"><label>Instalação</label>
+          <select class="select" id="orc_instalacao" onchange="calcularOrc()">
+            <option value="0">Sem instalação</option>
+            <option value="150">Instalação básica — R$ 150</option>
+            <option value="250">Instalação completa — R$ 250</option>
+            <option value="custom">Valor personalizado</option>
+          </select>
+        </div>
+        <div class="field" id="orc_inst_custom_wrap" style="display:none">
+          <label>Valor da Instalação (R$)</label>
+          <input class="input" id="orc_inst_custom" type="number" oninput="calcularOrc()">
+        </div>
+      </div>
+
+      <div style="background:#0f172a;border-radius:12px;padding:20px;color:#fff">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:12px">RESUMO DO ORÇAMENTO</div>
+        <div id="orc_resumo" style="font-size:13px;line-height:2"></div>
+        <div style="border-top:1px solid #334155;margin-top:12px;padding-top:12px;font-size:20px;font-weight:800" id="orc_total_display">Total: R$ 0,00</div>
+      </div>
+
+      <div class="field mt-md"><label>Observações</label><textarea class="input" id="orc_obs" rows="2" placeholder="Observações para o cliente..."></textarea></div>`,
+    footer:`
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarOrcamento()">💾 Salvar Orçamento</button>`
+  });
+}
+
+function calcularOrc(){
+  const comp=Number(document.getElementById('orc_comp')?.value)||0;
+  const larg=Number(document.getElementById('orc_larg')?.value)||0;
+  const preco_m2=Number(document.getElementById('orc_preco_m2')?.value)||0;
+  const area=comp*larg/10000;
+  if(document.getElementById('orc_area'))document.getElementById('orc_area').value=fmtNum(area)+' m²';
+
+  // Serviços
+  const saia=document.getElementById('orc_saia')?.checked;
+  const rodo=document.getElementById('orc_rodo')?.checked;
+  const cuba=document.getElementById('orc_cuba_check')?.checked;
+  const furos=Number(document.getElementById('orc_furos_qtd')?.value)||0;
+  const deslocamento=Number(document.getElementById('orc_deslocamento')?.value)||0;
+
+  // Instalação
+  const inst_sel=document.getElementById('orc_instalacao')?.value;
+  const wrap=document.getElementById('orc_inst_custom_wrap');
+  if(wrap)wrap.style.display=inst_sel==='custom'?'block':'none';
+  const inst=inst_sel==='custom'?Number(document.getElementById('orc_inst_custom')?.value)||0:Number(inst_sel)||0;
+
+  const v_pedra=area*preco_m2;
+  const v_saia=saia?(comp/100)*0.15*preco_m2:0;
+  const v_rodo=rodo?(comp/100)*0.10*preco_m2:0;
+  const v_cuba=cuba?280:0;
+  const v_furos=furos*80;
+
+  const total=v_pedra+v_saia+v_rodo+v_cuba+v_furos+inst+deslocamento;
+
+  const resumo=document.getElementById('orc_resumo');
+  if(resumo)resumo.innerHTML=[
+    v_pedra?`<div>Pedra (${fmtNum(area)} m² × ${fmtMoney(preco_m2)}): <b>${fmtMoney(v_pedra)}</b></div>`:'',
+    v_saia?`<div>Saia: <b>${fmtMoney(v_saia)}</b></div>`:'',
+    v_rodo?`<div>Rodabanca: <b>${fmtMoney(v_rodo)}</b></div>`:'',
+    v_cuba?`<div>Cuba: <b>${fmtMoney(v_cuba)}</b></div>`:'',
+    v_furos?`<div>Furos (${furos}x): <b>${fmtMoney(v_furos)}</b></div>`:'',
+    inst?`<div>Instalação: <b>${fmtMoney(inst)}</b></div>`:'',
+    deslocamento?`<div>Deslocamento: <b>${fmtMoney(deslocamento)}</b></div>`:'',
+  ].filter(Boolean).join('');
+
+  const td=document.getElementById('orc_total_display');
+  if(td)td.textContent='Total: '+fmtMoney(total);
+  window._orc_calc={area,v_pedra,v_saia,v_rodo,v_cuba,v_furos,inst,deslocamento,total,preco_m2};
+}
+
+async function salvarOrcamento(){
+  const cliente_id=document.getElementById('orc_cliente')?.value;
+  if(!cliente_id){toast('Selecione o cliente','error');return;}
+  const c=window._orc_calc||{};
+  const mat_sel=document.getElementById('orc_material');
+  const mat_txt=mat_sel?.options[mat_sel?.selectedIndex]?.text||'';
+  const d={
+    id:uid(),
+    cliente_id,
+    tipo_ambiente:document.getElementById('orc_ambiente')?.value,
+    material:mat_txt,
+    espessura:document.getElementById('orc_espessura')?.value,
+    comprimento_cm:Number(document.getElementById('orc_comp')?.value)||0,
+    largura_cm:Number(document.getElementById('orc_larg')?.value)||0,
+    area_m2:c.area||0,
+    preco_m2:c.preco_m2||0,
+    tem_saia:document.getElementById('orc_saia')?.checked,
+    tem_rodabanca:document.getElementById('orc_rodo')?.checked,
+    tem_cuba:document.getElementById('orc_cuba_check')?.checked,
+    qtd_furos:Number(document.getElementById('orc_furos_qtd')?.value)||0,
+    valor_instalacao:c.inst||0,
+    valor_deslocamento:c.deslocamento||0,
+    valor_total:c.total||0,
+    observacoes:document.getElementById('orc_obs')?.value,
+    status:'aberto',
+    numero:'ORC-'+Date.now().toString().slice(-5),
+    created_at:new Date().toISOString(),
+  };
+  try{
+    await SB.post('orcamentos',d);
+    toast('Orçamento salvo!','success');closeModal();pgOrcamentos();
+  }catch(e){toast('Erro: '+e.message,'error');}
+}
+
+function novoOrcamentoCliente(id,nome){closeModal();setTimeout(()=>modalNovoOrcamento(id,nome),100);}
+
+async function aprovarOrcamento(id){
+  if(!confirm('Fechar este orçamento e criar OS?'))return;
+  try{
+    await SB.patch(`orcamentos?id=eq.${id}`,{status:'fechado'});
+    const [o]=await SB.get(`orcamentos?id=eq.${id}&select=*,clientes(nome)`);
+    const os={
+      id:uid(),orcamento_id:id,cliente_id:o.cliente_id,
+      numero:'OS-'+Date.now().toString().slice(-4),
+      tipo_ambiente:o.tipo_ambiente,material:o.material,
+      status:'medição',created_at:new Date().toISOString(),
+    };
+    await SB.post('ordens_servico',os);
+    toast('OS criada com sucesso!','success');pgOrcamentos();
+  }catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// PIPELINE
+// ══════════════════════════════════════════════════════════
+async function pgPipeline(){
+  setPage('Pipeline de Vendas','');
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('orcamentos?select=*,clientes(nome)&order=created_at.desc');
+    const etapas=['lead','aberto','negociação','fechado','cancelado'];
+    const labels={lead:'🎯 Lead',aberto:'📋 Orçamento',negociação:'🤝 Negociação',fechado:'✅ Fechado',cancelado:'❌ Cancelado'};
+    document.getElementById('content').innerHTML=`<div class="pipeline">${etapas.map(e=>`
+      <div class="pipeline-col">
+        <div class="pipeline-col-header">
+          ${labels[e]}
+          <span class="badge badge-info">${data.filter(o=>(o.status||'aberto')===e).length}</span>
+        </div>
+        <div class="pipeline-col-body">
+          ${data.filter(o=>(o.status||'aberto')===e).map(o=>`
+            <div class="pipeline-card" onclick="verOrcamento('${o.id}')">
+              <div class="pipeline-card-title">${o.clientes?.nome||'—'}</div>
+              <div class="pipeline-card-sub">${o.tipo_ambiente||'—'} • ${fmtMoney(o.valor_total)}</div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('')}</div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+// ══════════════════════════════════════════════════════════
+// ORDENS DE SERVIÇO
+// ══════════════════════════════════════════════════════════
+async function pgOS(){
+  setPage('Ordens de Serviço',`<button class="btn btn-primary btn-sm" onclick="modalNovaOS()">+ Nova OS</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('ordens_servico?select=*,clientes(nome)&order=created_at.desc');
+    const badgeOS={medição:'badge-info',corte:'badge-warning',acabamento:'badge-purple',separação:'badge-warning',instalação:'badge-primary',finalizado:'badge-success',cancelado:'badge-danger'};
+    document.getElementById('content').innerHTML=`
+      <div class="card"><div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>OS</th><th>Cliente</th><th>Ambiente</th><th>Material</th><th>Status</th><th>Prazo</th><th></th></tr></thead>
+        <tbody>${data.length?data.map(o=>`<tr>
+          <td><b>${o.numero||'—'}</b></td>
+          <td>${o.clientes?.nome||'—'}</td>
+          <td>${o.tipo_ambiente||'—'}</td>
+          <td>${o.material||'—'}</td>
+          <td><span class="badge ${badgeOS[o.status]||'badge-gray'}">${o.status||'—'}</span></td>
+          <td>${fmtDate(o.prazo_entrega)}</td>
+          <td class="actions">
+            <button class="btn btn-sm btn-ghost" onclick="avancarOS('${o.id}','${o.status}')">▶ Avançar</button>
+          </td>
+        </tr>`).join(''):`<tr><td colspan="7"><div class="empty">Nenhuma OS</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+const ETAPAS_OS=['medição','corte','acabamento','separação','instalação','finalizado'];
+async function avancarOS(id,status){
+  const idx=ETAPAS_OS.indexOf(status);
+  if(idx>=ETAPAS_OS.length-1){toast('OS já finalizada','warning');return;}
+  const prox=ETAPAS_OS[idx+1];
+  if(!confirm(`Avançar para "${prox}"?`))return;
+  try{await SB.patch(`ordens_servico?id=eq.${id}`,{status:prox});toast('Status atualizado','success');pgOS();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+async function modalNovaOS(){
+  let clientes=[];try{clientes=await SB.get('clientes?select=id,nome&order=nome.asc');}catch(e){}
+  openModal({title:'Nova OS Manual',body:`
+    <div class="field"><label>Cliente</label><select class="select" id="nos_cliente"><option value="">Selecione</option>${clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select></div>
+    <div class="grid-2">
+      <div class="field"><label>Ambiente</label><select class="select" id="nos_amb">${['Cozinha','Banheiro','Soleira','Escada','Outros'].map(a=>`<option>${a}</option>`).join('')}</select></div>
+      <div class="field"><label>Material</label><input class="input" id="nos_mat" placeholder="Ex: Granito Preto São Gabriel"></div>
+    </div>
+    <div class="field"><label>Prazo de Entrega</label><input class="input" type="date" id="nos_prazo"></div>
+    <div class="field"><label>Observações</label><textarea class="input" id="nos_obs" rows="2"></textarea></div>`,
+    footer:`<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarNovaOS()">Salvar</button>`
+  });
+}
+
+async function salvarNovaOS(){
+  const d={id:uid(),cliente_id:document.getElementById('nos_cliente').value||null,
+    tipo_ambiente:document.getElementById('nos_amb').value,material:document.getElementById('nos_mat').value,
+    prazo_entrega:document.getElementById('nos_prazo').value||null,observacoes:document.getElementById('nos_obs').value,
+    status:'medição',numero:'OS-'+Date.now().toString().slice(-4),created_at:new Date().toISOString()};
+  try{await SB.post('ordens_servico',d);toast('OS criada!','success');closeModal();pgOS();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// KANBAN
+// ══════════════════════════════════════════════════════════
+async function pgKanban(){
+  setPage('Kanban de Produção','');
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('ordens_servico?select=*,clientes(nome)&status=neq.finalizado&status=neq.cancelado&order=created_at.asc');
+    const etapas=[['medição','📏 Medição'],['corte','✂️ Corte'],['acabamento','✨ Acabamento'],['separação','🚚 Separação'],['instalação','🔧 Instalação']];
+    document.getElementById('content').innerHTML=`<div class="kanban">${etapas.map(([e,label])=>`
+      <div class="kanban-col">
+        <div class="kanban-col-header" style="color:var(--primary)">${label} (${data.filter(o=>o.status===e).length})</div>
+        <div class="kanban-col-body">
+          ${data.filter(o=>o.status===e).map(o=>`
+            <div class="kanban-card">
+              <div class="kanban-card-title">${o.numero} — ${o.clientes?.nome||'—'}</div>
+              <div style="color:var(--text-soft);margin-bottom:6px">${o.tipo_ambiente||'—'} • ${o.material||'—'}</div>
+              <button class="btn btn-sm btn-primary" style="width:100%" onclick="avancarOS('${o.id}','${o.status}')">▶ Avançar</button>
+            </div>`).join('')||'<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:12px">Vazio</div>'}
+        </div>
+      </div>`).join('')}</div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+// ══════════════════════════════════════════════════════════
+// AGENDA
+// ══════════════════════════════════════════════════════════
+async function pgAgenda(){
+  setPage('Agenda de Medições',`<button class="btn btn-primary btn-sm" onclick="modalNovaAgenda()">+ Agendar</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('agenda?select=*,clientes(nome)&order=data_hora.asc');
+    document.getElementById('content').innerHTML=`
+      <div class="card"><div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Data/Hora</th><th>Cliente</th><th>Tipo</th><th>Endereço</th><th>Responsável</th><th></th></tr></thead>
+        <tbody>${data.length?data.map(a=>`<tr>
+          <td><b>${new Date(a.data_hora).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</b></td>
+          <td>${a.clientes?.nome||'—'}</td>
+          <td><span class="badge badge-info">${a.tipo||'Medição'}</span></td>
+          <td>${a.endereco||'—'}</td>
+          <td>${a.responsavel||'—'}</td>
+          <td class="actions">
+            <button class="btn btn-sm btn-danger" onclick="excluirAgenda('${a.id}')">🗑️</button>
+          </td>
+        </tr>`).join(''):`<tr><td colspan="6"><div class="empty">Nenhum agendamento</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+async function modalNovaAgenda(){
+  let clientes=[];try{clientes=await SB.get('clientes?select=id,nome&order=nome.asc');}catch(e){}
+  openModal({title:'Novo Agendamento',body:`
+    <div class="field"><label>Cliente</label><select class="select" id="ag_cliente"><option value="">Selecione</option>${clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select></div>
+    <div class="grid-2">
+      <div class="field"><label>Data e Hora</label><input class="input" type="datetime-local" id="ag_dt"></div>
+      <div class="field"><label>Tipo</label><select class="select" id="ag_tipo"><option>Medição</option><option>Instalação</option><option>Visita</option></select></div>
+    </div>
+    <div class="field"><label>Endereço</label><input class="input" id="ag_end" placeholder="Endereço completo"></div>
+    <div class="field"><label>Responsável</label><input class="input" id="ag_resp" placeholder="Nome do técnico"></div>
+    <div class="field"><label>Observações</label><textarea class="input" id="ag_obs" rows="2"></textarea></div>`,
+    footer:`<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarAgenda()">Salvar</button>`
+  });
+}
+
+async function salvarAgenda(){
+  const d={id:uid(),cliente_id:document.getElementById('ag_cliente').value||null,
+    data_hora:document.getElementById('ag_dt').value,tipo:document.getElementById('ag_tipo').value,
+    endereco:document.getElementById('ag_end').value,responsavel:document.getElementById('ag_resp').value,
+    observacoes:document.getElementById('ag_obs').value,created_at:new Date().toISOString()};
+  if(!d.data_hora){toast('Informe a data e hora','error');return;}
+  try{await SB.post('agenda',d);toast('Agendado!','success');closeModal();pgAgenda();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+async function excluirAgenda(id){
+  if(!confirm('Excluir agendamento?'))return;
+  try{await SB.del(`agenda?id=eq.${id}`);toast('Excluído','success');pgAgenda();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// CHAPAS & RETALHOS
+// ══════════════════════════════════════════════════════════
+async function pgChapas(){
+  setPage('Chapas & Retalhos',`<button class="btn btn-primary btn-sm" onclick="modalNovaChapa()">+ Nova Chapa</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('chapas?select=*&order=created_at.desc');
+    document.getElementById('content').innerHTML=`
+      <div class="card"><div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Nº</th><th>Material</th><th>Dimensões (cm)</th><th class="num">Área Total (m²)</th><th class="num">Área Disp. (m²)</th><th>Status</th><th></th></tr></thead>
+        <tbody>${data.length?data.map(c=>`<tr>
+          <td><b>${c.numero||'—'}</b></td>
+          <td>${c.material||'—'}</td>
+          <td>${c.comp_cm||0} × ${c.larg_cm||0}</td>
+          <td class="num">${fmtNum(c.area_total_m2)}</td>
+          <td class="num" style="color:${Number(c.area_disponivel_m2)<1?'var(--danger)':'var(--success)'}">${fmtNum(c.area_disponivel_m2)}</td>
+          <td><span class="badge ${c.status==='disponível'?'badge-success':'badge-warning'}">${c.status||'disponível'}</span></td>
+          <td class="actions"><button class="btn btn-sm btn-ghost" onclick="editarChapa('${c.id}')">✏️</button></td>
+        </tr>`).join(''):`<tr><td colspan="7"><div class="empty">Nenhuma chapa cadastrada</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+async function modalNovaChapa(){
+  let mats=[];try{mats=await SB.get('materiais?select=id,nome&order=nome.asc').catch(()=>[]);}catch(e){}
+  openModal({title:'Nova Chapa',body:`
+    <div class="grid-2">
+      <div class="field"><label>Número da Chapa</label><input class="input" id="ch_num" placeholder="001"></div>
+      <div class="field"><label>Material</label>
+        <input class="input" id="ch_mat" placeholder="Ex: Granito Preto São Gabriel" list="ch_mat_list">
+        <datalist id="ch_mat_list">${mats.map(m=>`<option value="${m.nome}">`).join('')}</datalist>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Comprimento (cm)</label><input class="input" id="ch_comp" type="number" oninput="calcChapa()"></div>
+      <div class="field"><label>Largura (cm)</label><input class="input" id="ch_larg" type="number" oninput="calcChapa()"></div>
+    </div>
+    <div class="field"><label>Área Total (m²)</label><input class="input" id="ch_area" readonly style="background:#f1f5f9;font-weight:700"></div>
+    <div class="field"><label>Fornecedor</label><input class="input" id="ch_forn" placeholder="Nome do fornecedor"></div>
+    <div class="field"><label>Custo (R$)</label><input class="input" id="ch_custo" type="number" placeholder="0.00"></div>`,
+    footer:`<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarChapa()">Salvar</button>`
+  });
+}
+
+function calcChapa(){
+  const c=Number(document.getElementById('ch_comp')?.value)||0;
+  const l=Number(document.getElementById('ch_larg')?.value)||0;
+  const a=c*l/10000;
+  if(document.getElementById('ch_area'))document.getElementById('ch_area').value=fmtNum(a)+' m²';
+}
+
+async function salvarChapa(){
+  const comp=Number(document.getElementById('ch_comp').value)||0;
+  const larg=Number(document.getElementById('ch_larg').value)||0;
+  const area=comp*larg/10000;
+  const d={id:uid(),numero:document.getElementById('ch_num').value,material:document.getElementById('ch_mat').value,
+    comp_cm:comp,larg_cm:larg,area_total_m2:area,area_disponivel_m2:area,
+    fornecedor:document.getElementById('ch_forn').value,custo:Number(document.getElementById('ch_custo').value)||0,
+    status:'disponível',created_at:new Date().toISOString()};
+  if(!d.material){toast('Informe o material','error');return;}
+  try{await SB.post('chapas',d);toast('Chapa cadastrada!','success');closeModal();pgChapas();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// MATERIAIS & PEÇAS
+// ══════════════════════════════════════════════════════════
+async function pgMateriais(){
+  setPage('Materiais & Peças',`<button class="btn btn-primary btn-sm" onclick="modalNovoMaterial()">+ Novo</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('materiais?select=*&order=tipo.asc,nome.asc');
+    document.getElementById('content').innerHTML=`
+      <div class="card"><div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Nome</th><th>Tipo</th><th class="num">Custo/m²</th><th class="num">Venda/m²</th><th class="num">Margem</th><th></th></tr></thead>
+        <tbody>${data.length?data.map(m=>{
+          const margem=m.preco_custo_m2?((m.preco_venda_m2-m.preco_custo_m2)/m.preco_custo_m2*100):0;
+          return`<tr>
+            <td><b>${m.nome}</b></td>
+            <td><span class="badge badge-gray">${m.tipo||'pedra'}</span></td>
+            <td class="num">${fmtMoney(m.preco_custo_m2)}</td>
+            <td class="num">${fmtMoney(m.preco_venda_m2)}</td>
+            <td class="num" style="color:var(--success)">${fmtNum(margem)}%</td>
+            <td class="actions"><button class="btn btn-sm btn-ghost" onclick="editarMaterial('${m.id}')">✏️</button></td>
+          </tr>`;}).join(''):`<tr><td colspan="6"><div class="empty">Nenhum material</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+function modalNovoMaterial(id=null,d={}){
+  openModal({title:id?'Editar Material':'Novo Material',body:`
+    <div class="field"><label>Nome *</label><input class="input" id="mat_nome" value="${d.nome||''}" placeholder="Ex: Granito Preto São Gabriel"></div>
+    <div class="grid-2">
+      <div class="field"><label>Tipo</label>
+        <select class="select" id="mat_tipo">
+          ${['pedra','cuba','pia','torneira','acessório','serviço','insumo'].map(t=>`<option ${d.tipo===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field"><label>Espessura</label>
+        <select class="select" id="mat_esp">
+          ${['2cm','3cm','4cm','—'].map(e=>`<option ${d.espessura===e?'selected':''}>${e}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Custo/m² (R$)</label><input class="input" id="mat_custo" type="number" value="${d.preco_custo_m2||''}" placeholder="0.00"></div>
+      <div class="field"><label>Venda/m² (R$)</label><input class="input" id="mat_venda" type="number" value="${d.preco_venda_m2||''}" placeholder="0.00"></div>
+    </div>
+    <div class="field"><label>Observações</label><input class="input" id="mat_obs" value="${d.observacoes||''}"></div>`,
+    footer:`<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarMaterial('${id||''}')">Salvar</button>`
+  });
+}
+
+async function editarMaterial(id){
+  try{const [m]=await SB.get(`materiais?id=eq.${id}&select=*`);modalNovoMaterial(id,m);}
+  catch(e){toast('Erro','error');}
+}
+
+async function salvarMaterial(id){
+  const d={nome:document.getElementById('mat_nome').value.trim(),tipo:document.getElementById('mat_tipo').value,
+    espessura:document.getElementById('mat_esp').value,preco_custo_m2:Number(document.getElementById('mat_custo').value)||0,
+    preco_venda_m2:Number(document.getElementById('mat_venda').value)||0,observacoes:document.getElementById('mat_obs').value};
+  if(!d.nome){toast('Nome obrigatório','error');return;}
+  try{
+    if(id){await SB.patch(`materiais?id=eq.${id}`,d);}
+    else{d.id=uid();d.created_at=new Date().toISOString();await SB.post('materiais',d);}
+    toast('Salvo!','success');closeModal();pgMateriais();
+  }catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// FINANCEIRO
+// ══════════════════════════════════════════════════════════
+async function pgFinanceiro(){
+  setPage('Contas & Fluxo',`<button class="btn btn-primary btn-sm" onclick="modalLancamento()">+ Lançamento</button>`);
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const data=await SB.get('financeiro?select=*,clientes(nome)&order=data_vencimento.asc&limit=200');
+    const rec=data.filter(d=>d.tipo==='receber');
+    const pag=data.filter(d=>d.tipo==='pagar');
+    const tot_rec=rec.reduce((s,d)=>s+(Number(d.valor)||0),0);
+    const tot_pag=pag.reduce((s,d)=>s+(Number(d.valor)||0),0);
+    document.getElementById('content').innerHTML=`
+      <div class="grid-3 mb-md">
+        <div class="kpi"><div class="kpi-label">A Receber</div><div class="kpi-value" style="color:var(--success)">${fmtMoney(tot_rec)}</div></div>
+        <div class="kpi"><div class="kpi-label">A Pagar</div><div class="kpi-value" style="color:var(--danger)">${fmtMoney(tot_pag)}</div></div>
+        <div class="kpi"><div class="kpi-label">Saldo</div><div class="kpi-value" style="color:${tot_rec-tot_pag>=0?'var(--success)':'var(--danger)'}">${fmtMoney(tot_rec-tot_pag)}</div></div>
+      </div>
+      <div class="card"><div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Descrição</th><th>Tipo</th><th>Cliente/Forn.</th><th>Vencimento</th><th class="num">Valor</th><th>Status</th><th></th></tr></thead>
+        <tbody>${data.length?data.map(d=>`<tr>
+          <td>${d.descricao||'—'}</td>
+          <td><span class="badge ${d.tipo==='receber'?'badge-success':'badge-danger'}">${d.tipo}</span></td>
+          <td>${d.clientes?.nome||d.fornecedor||'—'}</td>
+          <td>${fmtDate(d.data_vencimento)}</td>
+          <td class="num"><b>${fmtMoney(d.valor)}</b></td>
+          <td><span class="badge ${d.pago?'badge-success':'badge-warning'}">${d.pago?'Pago':'Pendente'}</span></td>
+          <td class="actions">
+            ${!d.pago?`<button class="btn btn-sm btn-success" onclick="baixarLancamento('${d.id}')">✓ Baixar</button>`:''}
+            <button class="btn btn-sm btn-danger" onclick="excluirLancamento('${d.id}')">🗑️</button>
+          </td>
+        </tr>`).join(''):`<tr><td colspan="7"><div class="empty">Nenhum lançamento</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+async function modalLancamento(){
+  let clientes=[];try{clientes=await SB.get('clientes?select=id,nome&order=nome.asc');}catch(e){}
+  openModal({title:'Novo Lançamento',body:`
+    <div class="grid-2">
+      <div class="field"><label>Tipo</label><select class="select" id="fin_tipo"><option value="receber">A Receber</option><option value="pagar">A Pagar</option></select></div>
+      <div class="field"><label>Valor (R$)</label><input class="input" id="fin_valor" type="number" placeholder="0.00"></div>
+    </div>
+    <div class="field"><label>Descrição *</label><input class="input" id="fin_desc" placeholder="Ex: OS-001 — João Silva"></div>
+    <div class="grid-2">
+      <div class="field"><label>Vencimento</label><input class="input" type="date" id="fin_venc" value="${hoje()}"></div>
+      <div class="field"><label>Cliente (opcional)</label><select class="select" id="fin_cliente"><option value="">—</option>${clientes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select></div>
+    </div>
+    <div class="field"><label>Fornecedor (opcional)</label><input class="input" id="fin_forn" placeholder="Nome do fornecedor"></div>`,
+    footer:`<button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarLancamento()">Salvar</button>`
+  });
+}
+
+async function salvarLancamento(){
+  const d={id:uid(),tipo:document.getElementById('fin_tipo').value,valor:Number(document.getElementById('fin_valor').value)||0,
+    descricao:document.getElementById('fin_desc').value,data_vencimento:document.getElementById('fin_venc').value,
+    cliente_id:document.getElementById('fin_cliente').value||null,fornecedor:document.getElementById('fin_forn').value,
+    pago:false,created_at:new Date().toISOString()};
+  if(!d.descricao){toast('Descrição obrigatória','error');return;}
+  try{await SB.post('financeiro',d);toast('Lançamento salvo!','success');closeModal();pgFinanceiro();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+async function baixarLancamento(id){
+  if(!confirm('Marcar como pago?'))return;
+  try{await SB.patch(`financeiro?id=eq.${id}`,{pago:true,data_pagamento:hoje()});toast('Baixado!','success');pgFinanceiro();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+async function excluirLancamento(id){
+  if(!confirm('Excluir lançamento?'))return;
+  try{await SB.del(`financeiro?id=eq.${id}`);toast('Excluído','success');pgFinanceiro();}
+  catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ══════════════════════════════════════════════════════════
+// FECHAMENTO DE CAIXA
+// ══════════════════════════════════════════════════════════
+async function pgCaixa(){
+  setPage('Fechamento de Caixa','');
+  const d=hoje();
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const mov=await SB.get(`financeiro?select=*,clientes(nome)&data_pagamento=eq.${d}&pago=eq.true`);
+    const entradas=mov.filter(m=>m.tipo==='receber').reduce((s,m)=>s+(Number(m.valor)||0),0);
+    const saidas=mov.filter(m=>m.tipo==='pagar').reduce((s,m)=>s+(Number(m.valor)||0),0);
+    document.getElementById('content').innerHTML=`
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Fechamento do dia: <b>${fmtDate(d)}</b></div>
+      <div class="grid-3 mb-md">
+        <div class="kpi"><div class="kpi-label">Entradas</div><div class="kpi-value" style="color:var(--success)">${fmtMoney(entradas)}</div></div>
+        <div class="kpi"><div class="kpi-label">Saídas</div><div class="kpi-value" style="color:var(--danger)">${fmtMoney(saidas)}</div></div>
+        <div class="kpi"><div class="kpi-label">Saldo do Dia</div><div class="kpi-value" style="color:${entradas-saidas>=0?'var(--success)':'var(--danger)'}">${fmtMoney(entradas-saidas)}</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">Movimentações de Hoje</div></div>
+      <div class="card-body no-pad"><div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Descrição</th><th>Cliente/Forn.</th><th>Tipo</th><th class="num">Valor</th></tr></thead>
+        <tbody>${mov.length?mov.map(m=>`<tr>
+          <td>${m.descricao||'—'}</td>
+          <td>${m.clientes?.nome||m.fornecedor||'—'}</td>
+          <td><span class="badge ${m.tipo==='receber'?'badge-success':'badge-danger'}">${m.tipo==='receber'?'Entrada':'Saída'}</span></td>
+          <td class="num"><b style="color:${m.tipo==='receber'?'var(--success)':'var(--danger)'}">${m.tipo==='receber'?'+':'-'}${fmtMoney(m.valor)}</b></td>
+        </tr>`).join(''):`<tr><td colspan="4"><div class="empty">Sem movimentações hoje</div></td></tr>`}</tbody>
+      </table></div></div></div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+// ══════════════════════════════════════════════════════════
+// RELATÓRIOS
+// ══════════════════════════════════════════════════════════
+async function pgRelatorios(){
+  setPage('Relatórios','');
+  document.getElementById('content').innerHTML=`<div class="empty"><div class="spin"></div></div>`;
+  try{
+    const [orc,os,fin]=await Promise.all([
+      SB.get('orcamentos?select=*&order=created_at.desc&limit=500'),
+      SB.get('ordens_servico?select=*&order=created_at.desc&limit=500'),
+      SB.get('financeiro?select=*&limit=500'),
+    ]);
+    const fat=orc.filter(o=>o.status==='fechado').reduce((s,o)=>s+(Number(o.valor_total)||0),0);
+    const area=orc.filter(o=>o.status==='fechado').reduce((s,o)=>s+(Number(o.area_m2)||0),0);
+    const rec=fin.filter(f=>f.tipo==='receber'&&f.pago).reduce((s,f)=>s+(Number(f.valor)||0),0);
+    document.getElementById('content').innerHTML=`
+      <div class="grid-4 mb-md">
+        <div class="kpi"><div class="kpi-label">Total Orçamentos</div><div class="kpi-value">${orc.length}</div></div>
+        <div class="kpi"><div class="kpi-label">Fechados</div><div class="kpi-value" style="color:var(--success)">${orc.filter(o=>o.status==='fechado').length}</div></div>
+        <div class="kpi"><div class="kpi-label">Faturamento Total</div><div class="kpi-value" style="color:var(--primary);font-size:18px">${fmtMoney(fat)}</div></div>
+        <div class="kpi"><div class="kpi-label">Área Vendida (m²)</div><div class="kpi-value">${fmtNum(area)}</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card-header"><div class="card-title">Orçamentos por Ambiente</div></div><div class="card-body">
+          ${[...new Set(orc.map(o=>o.tipo_ambiente).filter(Boolean))].map(amb=>{
+            const qtd=orc.filter(o=>o.tipo_ambiente===amb).length;
+            const val=orc.filter(o=>o.tipo_ambiente===amb).reduce((s,o)=>s+(Number(o.valor_total)||0),0);
+            return`<div class="flex flex-between items-center mb-sm">
+              <span style="font-size:13px">${amb}</span>
+              <div style="display:flex;gap:12px;font-size:13px">
+                <span class="badge badge-info">${qtd}</span>
+                <b>${fmtMoney(val)}</b>
+              </div></div>`;}).join('')||'<div class="empty">Sem dados</div>'}
+        </div></div>
+        <div class="card"><div class="card-header"><div class="card-title">Recebimentos</div></div><div class="card-body">
+          <div class="flex flex-between mb-sm"><span>Total recebido:</span><b style="color:var(--success)">${fmtMoney(rec)}</b></div>
+          <div class="flex flex-between mb-sm"><span>OS finalizadas:</span><b>${os.filter(o=>o.status==='finalizado').length}</b></div>
+          <div class="flex flex-between mb-sm"><span>OS em andamento:</span><b style="color:var(--primary)">${os.filter(o=>!['finalizado','cancelado'].includes(o.status)).length}</b></div>
+        </div></div>
+      </div>`;
+  }catch(e){document.getElementById('content').innerHTML=`<div class="empty"><h3>${e.message}</h3></div>`;}
+}
+
+// ══════════════════════════════════════════════════════════
+// CONFIGURAÇÕES + SQL
+// ══════════════════════════════════════════════════════════
+function pgConfig(){
+  setPage('Configurações','');
+  document.getElementById('content').innerHTML=`
+    <div class="card mb-md"><div class="card-header"><div class="card-title">🗄️ Criar Tabelas no Supabase</div></div>
+    <div class="card-body">
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:12px">Execute este SQL no painel do Supabase (SQL Editor) para criar as tabelas do sistema:</p>
+      <button class="btn btn-primary btn-sm mb-sm" onclick="copiarSQL()">📋 Copiar SQL</button>
+      <pre id="sql_block" style="background:#0f172a;color:#e2e8f0;padding:16px;border-radius:10px;font-size:11px;overflow:auto;max-height:400px;white-space:pre-wrap">${SQL_SETUP}</pre>
+    </div></div>
+    <div class="card"><div class="card-header"><div class="card-title">⚙️ Sobre o Sistema</div></div>
+    <div class="card-body">
+      <div class="flex flex-between mb-sm"><span>Empresa:</span><b>Granfort Marmoraria</b></div>
+      <div class="flex flex-between mb-sm"><span>Cidade Base:</span><b>Posto da Mata - BA</b></div>
+      <div class="flex flex-between mb-sm"><span>Raio de Atendimento:</span><b>150 km</b></div>
+      <div class="flex flex-between mb-sm"><span>Supabase:</span><b style="color:var(--success)">Conectado</b></div>
+    </div></div>`;
+}
+
+const SQL_SETUP=`-- GranfortSystem — Criar Tabelas
+-- Execute no SQL Editor do Supabase
+
+create table if not exists clientes(
+  id text primary key, nome text not null, cpf_cnpj text,
+  telefone text, email text, endereco text, cidade text,
+  tipo text default 'Pessoa Física', observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists materiais(
+  id text primary key, nome text not null, tipo text default 'pedra',
+  espessura text, preco_custo_m2 numeric default 0,
+  preco_venda_m2 numeric default 0, observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists chapas(
+  id text primary key, numero text, material text, comp_cm numeric,
+  larg_cm numeric, area_total_m2 numeric, area_disponivel_m2 numeric,
+  fornecedor text, custo numeric default 0,
+  status text default 'disponível', created_at timestamptz default now()
+);
+
+create table if not exists orcamentos(
+  id text primary key, numero text, cliente_id text references clientes(id),
+  tipo_ambiente text, material text, espessura text,
+  comprimento_cm numeric, largura_cm numeric, area_m2 numeric,
+  preco_m2 numeric, tem_saia boolean default false,
+  tem_rodabanca boolean default false, tem_cuba boolean default false,
+  qtd_furos int default 0, valor_instalacao numeric default 0,
+  valor_deslocamento numeric default 0, valor_total numeric default 0,
+  observacoes text, status text default 'aberto',
+  created_at timestamptz default now()
+);
+
+create table if not exists ordens_servico(
+  id text primary key, numero text, orcamento_id text,
+  cliente_id text references clientes(id),
+  tipo_ambiente text, material text, status text default 'medição',
+  prazo_entrega date, observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists agenda(
+  id text primary key, cliente_id text references clientes(id),
+  data_hora timestamptz, tipo text default 'Medição',
+  endereco text, responsavel text, observacoes text,
+  created_at timestamptz default now()
+);
+
+create table if not exists financeiro(
+  id text primary key, tipo text not null,
+  descricao text, cliente_id text references clientes(id),
+  fornecedor text, valor numeric default 0,
+  data_vencimento date, data_pagamento date,
+  pago boolean default false, created_at timestamptz default now()
+);
+
+-- Ativar RLS (segurança)
+alter table clientes enable row level security;
+alter table materiais enable row level security;
+alter table chapas enable row level security;
+alter table orcamentos enable row level security;
+alter table ordens_servico enable row level security;
+alter table agenda enable row level security;
+alter table financeiro enable row level security;
+
+-- Política: acesso total (ajuste conforme necessário)
+create policy "acesso_total" on clientes for all using (true) with check (true);
+create policy "acesso_total" on materiais for all using (true) with check (true);
+create policy "acesso_total" on chapas for all using (true) with check (true);
+create policy "acesso_total" on orcamentos for all using (true) with check (true);
+create policy "acesso_total" on ordens_servico for all using (true) with check (true);
+create policy "acesso_total" on agenda for all using (true) with check (true);
+create policy "acesso_total" on financeiro for all using (true) with check (true);`;
+
+function copiarSQL(){
+  navigator.clipboard.writeText(SQL_SETUP).then(()=>toast('SQL copiado!','success'));
+}
+
+function verOrcamento(id){toast('Em desenvolvimento','warning');}
+function editarChapa(id){toast('Em desenvolvimento','warning');}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+nav('dashboard');
+</script>
+</body>
+</html>
